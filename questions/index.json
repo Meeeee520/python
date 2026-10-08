@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "days": [
+    {
+      "date": "2026-10-09",
+      "topic": "Python变量类型与输入输出",
+      "path": "questions/2026-10/2026-10-09_Python变量类型与输入输出.json",
+      "count": 5
+    }
+  ]
+}
