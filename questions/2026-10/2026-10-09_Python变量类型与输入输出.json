@@ -5,7 +5,7 @@
   "stage": "Python 基础",
   "estimatedMinutes": 25,
   "notePath": "notes/2026-10/2026-10-09_Python变量类型与输入输出.md",
-  "collectedAt": "2026-10-08",
+  "collectedAt": "2026-10-09",
   "sources": [
     {
       "title": "Python 官方：内置函数",
@@ -104,15 +104,15 @@
       "explanation": "金额和百分数都可能带小数，所以用 float()。12.5% 对应 0.125，计算时要除以 100。这道变式简化了 CS50P 的字符串清理和函数要求，只练今天的输入、转换与输出。请在本地运行；网站提供参考答案与测试用例，不执行代码。",
       "tests": [
         {
-          "input": "80\\n12.5",
+          "input": "80\n12.5",
           "output": "Tip: 10.00"
         },
         {
-          "input": "200\\n15",
+          "input": "200\n15",
           "output": "Tip: 30.00"
         },
         {
-          "input": "0\\n20",
+          "input": "0\n20",
           "output": "Tip: 0.00"
         }
       ],
