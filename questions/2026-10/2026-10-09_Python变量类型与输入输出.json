@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-09",
+  "topic": "Python变量类型与输入输出",
+  "stage": "Python 基础",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-09_Python变量类型与输入输出.md",
+  "collectedAt": "2026-10-08",
+  "sources": [
+    {
+      "title": "Python 官方：内置函数",
+      "url": "https://docs.python.org/3/library/functions.html#input",
+      "kind": "概念来源"
+    },
+    {
+      "title": "Python 官方：输入与输出",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html",
+      "kind": "概念来源"
+    },
+    {
+      "title": "CS50P：Tip Calculator",
+      "url": "https://cs50.harvard.edu/python/psets/0/tip/",
+      "kind": "练习来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "input 返回什么？",
+      "difficulty": "入门",
+      "prompt": "运行下面的代码，输入 18 并回车。age 的类型是什么？",
+      "code": "age = input(\"Age: \")",
+      "options": [
+        "int",
+        "str",
+        "float",
+        "bool"
+      ],
+      "answer": 1,
+      "explanation": "input() 返回字符串。即使输入看起来是整数，age 仍然是字符串 '18'。需要计算时再用 int(age) 转换。",
+      "hint": "把“输入的内容”和“变量的类型”分开考虑。",
+      "sourceIndex": 0,
+      "attribution": "依据官方概念编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "先转换，再相加",
+      "difficulty": "入门",
+      "prompt": "输入第一门成绩 80、第二门成绩 90。哪段代码会输出数值 170？",
+      "options": [
+        "print(input() + input())",
+        "print(int(input()) + int(input()))",
+        "print(str(input()) + str(input()))",
+        "print(\"80\" + \"90\")"
+      ],
+      "answer": 1,
+      "explanation": "input() 返回字符串，直接用 + 得到 '8090'。int() 将两个输入转成整数，再相加得到 170。假设输入都是有效整数。",
+      "hint": "字符串的 + 是拼接，整数的 + 才是算术相加。",
+      "sourceIndex": 0,
+      "attribution": "依据官方概念编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "保留两位小数",
+      "difficulty": "基础",
+      "prompt": "哪一行会显示 Avg: 86.50？",
+      "code": "average = 86.5",
+      "options": [
+        "print(\"Avg: {average:.2f}\")",
+        "print(f\"Avg: {average:.2f}\")",
+        "print(f\"Avg: {average}\")",
+        "print(average, \".2f\")"
+      ],
+      "answer": 1,
+      "explanation": "f 前缀让花括号里的表达式参与求值；:.2f 让结果按定点形式显示两位小数。只改变显示方式，不改变 average 的数值。",
+      "hint": "既需要 f 前缀，也需要格式说明。",
+      "sourceIndex": 1,
+      "attribution": "依据官方概念编写"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "读代码，写输出",
+      "difficulty": "基础",
+      "prompt": "下面两行 print 的输出分别是什么？每行写一个结果，不要加引号。",
+      "code": "a = \"12\"\nb = \"3\"\nprint(a + b)\nprint(int(a) + int(b))",
+      "answer": "123\n15",
+      "explanation": "第一行拼接两个字符串，得到 123；第二行把字符串转为整数后相加，得到 15。注意 int() 不会自动改写原变量 a 和 b。",
+      "hint": "第二个 print 中才出现类型转换。",
+      "sourceIndex": 0,
+      "attribution": "依据官方概念编写"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "写一个小费计算器",
+      "difficulty": "应用",
+      "prompt": "读入消费金额和小费百分数（均为普通数字，不带货币或百分号），计算小费金额并显示两位小数。输入保证有效。例：输入 80 和 12.5，输出 Tip: 10.00。今天先用顺序语句实现。",
+      "starter": "# 在自己的 Mac 上运行 Python 3\namount = ...\npercent = ...\n# 计算并打印小费\n",
+      "answer": "amount = float(input())\npercent = float(input())\ntip = amount * percent / 100\nprint(f\"Tip: {tip:.2f}\")",
+      "explanation": "金额和百分数都可能带小数，所以用 float()。12.5% 对应 0.125，计算时要除以 100。这道变式简化了 CS50P 的字符串清理和函数要求，只练今天的输入、转换与输出。请在本地运行；网站提供参考答案与测试用例，不执行代码。",
+      "tests": [
+        {
+          "input": "80\\n12.5",
+          "output": "Tip: 10.00"
+        },
+        {
+          "input": "200\\n15",
+          "output": "Tip: 30.00"
+        },
+        {
+          "input": "0\\n20",
+          "output": "Tip: 0.00"
+        }
+      ],
+      "hint": "先读入两个 float，计算 amount * percent / 100，最后用 :.2f。",
+      "sourceIndex": 2,
+      "attribution": "参考 CS50P 改编，非官方原题"
+    }
+  ]
+}
