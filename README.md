@@ -34,6 +34,7 @@
 | 日期 | 今日主题与笔记 | 练习 |
 | --- | --- | --- |
 | 2026-10-09 | [Python 变量、类型与输入输出](notes/2026-10/2026-10-09_Python变量类型与输入输出.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site) · [题目数据](questions/2026-10/2026-10-09_Python变量类型与输入输出.json) |
+| 2026-10-10 | [条件判断与循环](notes/2026-10/2026-10-10_条件判断与循环.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site) · [题目数据](questions/2026-10/2026-10-10_条件判断与循环.json) |
 <!-- DAILY_NOTES_END -->
 
 ## ✅ 学习方法
