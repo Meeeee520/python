@@ -6,6 +6,12 @@
       "topic": "Python变量类型与输入输出",
       "path": "questions/2026-10/2026-10-09_Python变量类型与输入输出.json",
       "count": 5
+    },
+    {
+      "date": "2026-10-10",
+      "topic": "条件判断与循环",
+      "path": "questions/2026-10/2026-10-10_条件判断与循环.json",
+      "count": 5
     }
   ]
 }
