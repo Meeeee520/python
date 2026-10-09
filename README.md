@@ -6,9 +6,11 @@
 
 ## 🧩 每日练习
 
-[打开 Python 每日练习网站](https://python-daily-lab.sillywood.chatgpt.site)
+[打开每日练习网站](https://python-daily-lab.sillywood.chatgpt.site)
 
-**备用入口**：[下载本地版网页](web/index.html)。打开文件页面后点击 Download raw file，保存为 HTML，并用 Chrome 或 Safari 打开。此文件包含完整页面，联网时读取同一仓库的每日题目，在线数据不可用时显示首日预览。
+网站新增 **「数据结构」** 课程按钮，使用 Java 示例；对应的[每日计划、笔记与题目](https://github.com/Meeeee520/DataStructure)保存在独立的 DataStructure 仓库。两条学习线共用原规划的学习时间。
+
+**备用入口**：[下载本地版网页](web/index.html)。打开文件页面后点击 Download raw file，保存为 HTML，并用 Chrome 或 Safari 打开。此文件包含完整页面，可切换 Python 和数据结构，联网时读取各自仓库的每日题目，在线数据不可用时显示当前课程的有日期首日副本。
 
 
 网站私密托管，提供每日 5 道匹配练习、客观题判分、提示、解析、来源与历史日期切换。编程题在自己的电脑运行，并对照参考实现及测试用例。
