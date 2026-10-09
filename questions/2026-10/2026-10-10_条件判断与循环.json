@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-10",
+  "topic": "条件判断与循环",
+  "stage": "Python 基础",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-10_条件判断与循环.md",
+  "collectedAt": "2026-10-10",
+  "sources": [
+    {
+      "title": "Python 官方教程：更多流程控制工具",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "kind": "概念与示例来源"
+    },
+    {
+      "title": "CS50P Lecture 1：Conditionals",
+      "url": "https://cs50.harvard.edu/python/notes/1/",
+      "kind": "课程来源"
+    },
+    {
+      "title": "CS50P Lecture 2：Loops",
+      "url": "https://cs50.harvard.edu/python/notes/2/",
+      "kind": "课程来源"
+    },
+    {
+      "title": "CS50P：Coke Machine",
+      "url": "https://cs50.harvard.edu/python/psets/2/coke/",
+      "kind": "改编练习来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "分支检查顺序",
+      "difficulty": "入门",
+      "prompt": "下面代码输出什么？",
+      "code": "score = 85\nif score >= 90:\n    print(\"A\")\nelif score >= 60:\n    print(\"Pass\")\nelse:\n    print(\"Fail\")",
+      "options": [
+        "A",
+        "Pass",
+        "Fail",
+        "先输出 Pass，再输出 A"
+      ],
+      "answer": 1,
+      "explanation": "85 不满足第一项 >= 90，但满足第二项 >= 60，所以输出 Pass。同一条 if/elif/else 链只执行第一个为真的分支。",
+      "hint": "从上到下逐项检查，进入一项后就离开整条分支链。",
+      "sourceIndex": 1,
+      "attribution": "依据 CS50P 条件分支概念编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "range 不包含终点",
+      "difficulty": "入门",
+      "prompt": "list(range(1, 6, 2)) 的结果是什么？",
+      "options": [
+        "[1, 2, 3, 4, 5]",
+        "[1, 3, 5]",
+        "[1, 3, 5, 7]",
+        "[2, 4, 6]"
+      ],
+      "answer": 1,
+      "explanation": "起点是 1，每次增加 2，终点 6 不包含，所以依次得到 1、3、5。",
+      "hint": "把 range 看成 start、stop、step，stop 本身不进入序列。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 range 示例编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "break 与 continue",
+      "difficulty": "基础",
+      "prompt": "下面程序依次打印哪些数字？",
+      "code": "for number in range(1, 6):\n    if number == 2:\n        continue\n    if number == 4:\n        break\n    print(number)",
+      "options": [
+        "1、2、3、4、5",
+        "1、3",
+        "1、3、5",
+        "2、4"
+      ],
+      "answer": 1,
+      "explanation": "2 触发 continue，只跳过当前轮；4 触发 break，整个循环结束，因此 4 和 5 都不打印。",
+      "hint": "continue 是“本轮到此为止”，break 是“整个循环到此为止”。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 break/continue 概念编写"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "追踪累加结果",
+      "difficulty": "基础",
+      "prompt": "写出最后一行唯一的输出，只写数字。",
+      "code": "total = 0\nfor i in range(4):\n    if i == 1:\n        continue\n    total += i\nprint(total)",
+      "answer": "5",
+      "explanation": "range(4) 产生 0、1、2、3；i 为 1 时跳过累加，所以 total = 0 + 2 + 3 = 5。",
+      "hint": "列出每轮 i 的值，并标出哪一轮被 continue 跳过。",
+      "sourceIndex": 2,
+      "attribution": "依据 CS50P 循环概念编写"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "哨兵结束的成绩统计",
+      "difficulty": "应用",
+      "prompt": "逐行读入整数成绩，读到 -1 时结束。0–100 为有效成绩，其他整数忽略；统计有效人数、及格人数（>=60）和平均分。若没有有效成绩，只输出 No data；否则按测试所示输出，平均分保留两位。输入保证最终会出现 -1，且每行都是整数。",
+      "starter": "total = 0\ncount = 0\npassed = 0\n\nwhile True:\n    score = int(input())\n    # 在这里处理结束标记、无效成绩和统计\n",
+      "answer": "total = 0\ncount = 0\npassed = 0\n\nwhile True:\n    score = int(input())\n\n    if score == -1:\n        break\n    if score < 0 or score > 100:\n        continue\n\n    total += score\n    count += 1\n    if score >= 60:\n        passed += 1\n\nif count == 0:\n    print(\"No data\")\nelse:\n    print(f\"Count: {count}\")\n    print(f\"Passed: {passed}\")\n    print(f\"Average: {total / count:.2f}\")",
+      "explanation": "-1 用 break 结束循环；其他范围外整数用 continue 忽略。只有有效成绩才更新 total 和 count，最后先检查 count 是否为 0，避免除以 0。本题借鉴 Coke Machine 的重复输入、无效值忽略、状态更新和终止条件，改写为成绩场景，并非 CS50 官方原题。网站不执行代码，请在本地运行。",
+      "tests": [
+        {
+          "input": "80\n55\n110\n60\n-1",
+          "output": "Count: 3\nPassed: 2\nAverage: 65.00"
+        },
+        {
+          "input": "-5\n101\n-1",
+          "output": "No data"
+        },
+        {
+          "input": "100\n-1",
+          "output": "Count: 1\nPassed: 1\nAverage: 100.00"
+        }
+      ],
+      "hint": "先判断 -1，再忽略范围外成绩；只有有效值才能参与三个统计量。",
+      "sourceIndex": 3,
+      "attribution": "参考 CS50P Coke Machine 的循环结构改编，非官方原题"
+    }
+  ]
+}
