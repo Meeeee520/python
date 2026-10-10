@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-12",
+  "track": "python",
+  "title": "把成绩报告变成函数",
+  "goal": "保留周末的输入输出，将统计封装为 summarize(scores)。它只负责计算，返回结果；主程序负责录入和打印。",
+  "prerequisites": [
+    "周末成绩分析项目",
+    "今日笔记：函数参数与返回值"
+  ],
+  "filename": "grade_functions.py",
+  "runCommand": "python3 grade_functions.py",
+  "starter": "def summarize(scores):\n    # TODO：空列表返回 None；其余返回平均分、最高分、最低分与及格人数。\n    pass\n\n# TODO：复用周末录入代码，调用函数并根据返回值输出。\n",
+  "steps": [
+    {
+      "id": "fn-empty",
+      "day": "2026-10-12",
+      "title": "写清函数接收什么、返回什么",
+      "instruction": "定义 summarize(scores)。空列表返回 None；其他情况返回四个统计量。返回值示例：(80.0, 100.0, 60.0, 3)。",
+      "hint": "参数 scores 是函数的输入，return 才把结果交给调用方。",
+      "knowledge": [
+        "def",
+        "参数",
+        "return"
+      ]
+    },
+    {
+      "id": "fn-local",
+      "day": "2026-10-12",
+      "title": "把计算移入函数",
+      "instruction": "将累加、最值与及格人数计算移入 summarize；函数内不调用 input、不打印报告。用两组不同列表先后调用，检查变量没有串用。",
+      "hint": "每次调用重新建立 total 等局部变量；不要依赖全局统计变量。",
+      "knowledge": [
+        "局部变量",
+        "函数职责"
+      ]
+    },
+    {
+      "id": "fn-main",
+      "day": "2026-10-12",
+      "title": "接回主程序并完成验收",
+      "instruction": "主程序保留原来的录入格式，调用函数，空结果打印暂无成绩。其他结果拆包后输出。比较同一输入重构前后的输出，保存你对 print 和 return 的解释。",
+      "hint": "四个返回值可以放在一个元组中，再通过四个变量接收。",
+      "knowledge": [
+        "调用",
+        "返回值拆包",
+        "行为一致"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "normal",
+      "label": "三人成绩",
+      "input": "3\n60\n80\n100\n",
+      "output": "平均分：80.00\n最高分：100.00\n最低分：60.00\n及格人数：3/3",
+      "purpose": "检查累加、平均数、最高最低分与 60 分边界。"
+    },
+    {
+      "id": "empty",
+      "label": "暂无成绩",
+      "input": "0\n",
+      "output": "暂无成绩",
+      "purpose": "先检查人数，再访问第一个元素或做除法。"
+    },
+    {
+      "id": "single",
+      "label": "恰好及格的一人",
+      "input": "1\n60\n",
+      "output": "平均分：60.00\n最高分：60.00\n最低分：60.00\n及格人数：1/1",
+      "purpose": "只有一个元素时，最值和平均分仍然正确。"
+    },
+    {
+      "id": "retry",
+      "label": "越界后重新输入",
+      "input": "1\n-1\n101\n70\n",
+      "output": "Invalid input\nInvalid input\n平均分：70.00\n最高分：70.00\n最低分：70.00\n及格人数：1/1",
+      "purpose": "错误成绩不占用名额；必须在同一轮继续读到合法成绩。"
+    },
+    {
+      "id": "fail",
+      "label": "全部未及格",
+      "input": "2\n30\n50\n",
+      "output": "平均分：40.00\n最高分：50.00\n最低分：30.00\n及格人数：0/2",
+      "purpose": "不要把及格人数误初始化为 1。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "f1",
+      "question": "函数里 print(average) 与 return average 有什么区别？",
+      "answer": "print 显示到屏幕；return 把值交给调用方并结束本次函数。只有打印而没有返回的函数默认返回 None。"
+    },
+    {
+      "id": "f2",
+      "question": "为什么统计函数不负责 input？",
+      "answer": "让它可以处理主程序、文件或测试传来的不同数据，计算不依赖特定输入方式。"
+    }
+  ],
+  "solution": "def summarize(scores):\n    if not scores:\n        return None\n    total = 0\n    highest = scores[0]\n    lowest = scores[0]\n    passed = 0\n    for score in scores:\n        total += score\n        if score > highest:\n            highest = score\n        if score < lowest:\n            lowest = score\n        if score >= 60:\n            passed += 1\n    return total / len(scores), highest, lowest, passed\n\nn = int(input())\nscores = []\nfor i in range(max(0, n)):\n    score = float(input())\n    while score < 0 or score > 100:\n        print(\"Invalid input\")\n        score = float(input())\n    scores.append(score)\nresult = summarize(scores)\nif result is None:\n    print(\"暂无成绩\")\nelse:\n    average, highest, lowest, passed = result\n    print(f\"平均分：{average:.2f}\")\n    print(f\"最高分：{highest:.2f}\")\n    print(f\"最低分：{lowest:.2f}\")\n    print(f\"及格人数：{passed}/{len(scores)}\")\n",
+  "solutionExplanation": [
+    "计算函数对空列表先返回 None，再进行最值与平均数计算。",
+    "录入与输出保留在函数外，因此能单独验证计算。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：控制流程",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "attribution": "原创项目；按官方的 if、for、range 与 while 概念设计。"
+    },
+    {
+      "title": "Python 官方教程：列表与字符串",
+      "url": "https://docs.python.org/3/tutorial/introduction.html",
+      "attribution": "周日用列表与切片做扩展；不是官方原题。"
+    }
+  ]
+}

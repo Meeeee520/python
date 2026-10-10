@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "projectId": "weekend-2026-10-10",
+  "track": "python",
+  "title": "成绩分析小工具 · Python",
+  "goal": "先输入人数 n，再逐个输入 0–100 的数字成绩。输出平均分、最高分、最低分与及格人数。周六做最小可用版，周日加入列表与独立备份。",
+  "prerequisites": [
+    "变量、input、int/float 与 f-string",
+    "周六笔记：条件判断与循环",
+    "周日笔记：字符串列表与切片（周日再学）"
+  ],
+  "filename": "grade_project.py",
+  "runCommand": "python3 grade_project.py",
+  "starter": "# 第一行输入人数，接下来每行输入一个数字成绩。\n# 今天只要求处理数字与范围，非数字输入留到异常处理日。\nn = int(input())\n\nif n <= 0:\n    print(\"暂无成绩\")\nelse:\n    total = 0\n    highest = 0\n    lowest = 100\n    passed = 0\n    for i in range(n):\n        # TODO：读到一个合法成绩，再更新统计量。\n        pass\n    # TODO：按样例格式输出报告。\n# 周日再把每个合法成绩存进列表，并建立一份独立的一维副本。\n",
+  "steps": [
+    {
+      "id": "sat-input",
+      "day": "2026-10-10",
+      "title": "让程序读到一组成绩",
+      "instruction": "先写 n = int(input())。n <= 0 时输出“暂无成绩”；其余情况用 for i in range(n) 逐个读入浮点数。先用 3、60、80、100 试运行。",
+      "hint": "input 得到字符串；int/float 决定如何把它变成数字。range(n) 恰好循环 n 次。",
+      "knowledge": [
+        "input",
+        "类型转换",
+        "for/range"
+      ]
+    },
+    {
+      "id": "sat-stats",
+      "day": "2026-10-10",
+      "title": "在循环里累积统计量",
+      "instruction": "为 total、highest、lowest、passed 安排初值。每读到一个合法成绩就更新这四个变量。平均分在循环结束后算；60 分也算及格。",
+      "hint": "合法分数在 0–100 内，因此最高分可以从 0 开始、最低分从 100 开始。不要把 total / n 放进 n <= 0 的分支。",
+      "knowledge": [
+        "累加",
+        "if",
+        "边界"
+      ]
+    },
+    {
+      "id": "sat-retry",
+      "day": "2026-10-10",
+      "title": "给越界成绩一次重试机会",
+      "instruction": "成绩小于 0 或大于 100 时输出 Invalid input，并在 while 中重读，直到合法。今天假定输入是数字，不要求提前学习 try/except。",
+      "hint": "重试属于同一个学生；只有离开 while 后才进入下一轮 for。",
+      "knowledge": [
+        "while",
+        "逻辑 or",
+        "输入范围"
+      ]
+    },
+    {
+      "id": "sun-list",
+      "day": "2026-10-11",
+      "title": "把成绩留下来，支持再次分析",
+      "instruction": "周日阅读列表笔记后：用 scores = [] 和 append 保存合法成绩，再遍历列表算统计。试把一行“60 80 100”用 split 拆开，作为可选输入扩展。",
+      "hint": "先完成逐行输入的必做格式；split 扩展另存一个版本，不要改变自测的输入协议。",
+      "knowledge": [
+        "列表",
+        "append",
+        "字符串 split"
+      ]
+    },
+    {
+      "id": "sun-backup",
+      "day": "2026-10-11",
+      "title": "做一个修改互不影响的备份",
+      "instruction": "用 backup = scores[:] 复制一维数值列表，临时修改 scores[0]，观察 backup[0] 是否保留原值。解释为什么 backup = scores 做不到。实验后去掉额外输出，完成自测与复盘。",
+      "hint": "切片建立新的外层列表。本项目元素都是数字；嵌套可变对象需要进一步讨论。",
+      "knowledge": [
+        "切片",
+        "引用",
+        "独立副本"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "normal",
+      "label": "三人成绩",
+      "input": "3\n60\n80\n100\n",
+      "output": "平均分：80.00\n最高分：100.00\n最低分：60.00\n及格人数：3/3",
+      "purpose": "检查累加、平均数、最高最低分与 60 分边界。"
+    },
+    {
+      "id": "empty",
+      "label": "暂无成绩",
+      "input": "0\n",
+      "output": "暂无成绩",
+      "purpose": "先检查人数，再访问第一个元素或做除法。"
+    },
+    {
+      "id": "single",
+      "label": "恰好及格的一人",
+      "input": "1\n60\n",
+      "output": "平均分：60.00\n最高分：60.00\n最低分：60.00\n及格人数：1/1",
+      "purpose": "只有一个元素时，最值和平均分仍然正确。"
+    },
+    {
+      "id": "retry",
+      "label": "越界后重新输入",
+      "input": "1\n-1\n101\n70\n",
+      "output": "Invalid input\nInvalid input\n平均分：70.00\n最高分：70.00\n最低分：70.00\n及格人数：1/1",
+      "purpose": "错误成绩不占用名额；必须在同一轮继续读到合法成绩。"
+    },
+    {
+      "id": "fail",
+      "label": "全部未及格",
+      "input": "2\n30\n50\n",
+      "output": "平均分：40.00\n最高分：50.00\n最低分：30.00\n及格人数：0/2",
+      "purpose": "不要把及格人数误初始化为 1。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "r1",
+      "question": "为什么要先处理 n <= 0，再计算 total / n？",
+      "answer": "避免除以 0，也避免空列表时访问 scores[0]。"
+    },
+    {
+      "id": "r2",
+      "question": "为什么 range(n) 不会读 n + 1 次成绩？",
+      "answer": "它生成从 0 到 n-1 的 n 个整数，终点 n 不包含在内。"
+    },
+    {
+      "id": "r3",
+      "question": "backup = scores 和 backup = scores[:] 的差别是什么？",
+      "answer": "前者共享同一列表；后者创建新的一维列表。本例元素为数值，修改 scores 的位置不会改变 backup。"
+    }
+  ],
+  "solution": "n = int(input())\nif n <= 0:\n    print(\"暂无成绩\")\nelse:\n    scores = []\n    for i in range(n):\n        score = float(input())\n        while score < 0 or score > 100:\n            print(\"Invalid input\")\n            score = float(input())\n        scores.append(score)\n\n    total = 0\n    highest = scores[0]\n    lowest = scores[0]\n    passed = 0\n    for score in scores:\n        total += score\n        if score > highest:\n            highest = score\n        if score < lowest:\n            lowest = score\n        if score >= 60:\n            passed += 1\n\n    backup = scores[:]\n    print(f\"平均分：{total / n:.2f}\")\n    print(f\"最高分：{highest:.2f}\")\n    print(f\"最低分：{lowest:.2f}\")\n    print(f\"及格人数：{passed}/{n}\")\n    # 周日实验：在本地临时加入 scores[0] = 0 与 print(backup[0])。\n    # 一维列表副本应保留修改前的数值；实验后移除额外输出再跑自测。\n",
+  "solutionExplanation": [
+    "输入阶段先校验人数和成绩范围；任何非法成绩都在同一轮重试。",
+    "统计阶段只处理已收集的合法成绩，每个变量只承担一种职责。",
+    "输出阶段统一保留两位小数，避免把字符串拼接与数值计算混在一起。",
+    "周六版本可以直接边输入边统计；参考代码展示周日完成后的列表版本。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：控制流程",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "attribution": "原创项目；按官方的 if、for、range 与 while 概念设计。"
+    },
+    {
+      "title": "Python 官方教程：列表与字符串",
+      "url": "https://docs.python.org/3/tutorial/introduction.html",
+      "attribution": "周日用列表与切片做扩展；不是官方原题。"
+    }
+  ]
+}
