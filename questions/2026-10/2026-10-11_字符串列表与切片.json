@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-11",
+  "topic": "字符串列表与切片",
+  "stage": "Python 基础",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-11_字符串列表与切片.md",
+  "collectedAt": "2026-10-11",
+  "sources": [
+    {"title": "Python 官方教程：字符串、列表与切片", "url": "https://docs.python.org/3/tutorial/introduction.html", "kind": "官方概念与示例来源"},
+    {"title": "Python 官方教程：列表方法", "url": "https://docs.python.org/3/tutorial/datastructures.html", "kind": "官方列表与复制来源"}
+  ],
+  "questions": [
+    {
+      "id": "q1", "type": "mcq", "title": "切片的右端点", "difficulty": "入门",
+      "prompt": "下面代码输出什么？", "code": "word = \"Python\"\nprint(word[1:5:2])",
+      "options": ["yt", "yh", "yth", "Pto"], "answer": 1,
+      "explanation": "下标 1、3 分别是 y、h；stop=5 不包含 5，所以结果为 yh。",
+      "hint": "先写出每个字符的下标，再从 1 开始每次加 2。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方切片概念编写"
+    },
+    {
+      "id": "q2", "type": "mcq", "title": "字符串不可变", "difficulty": "入门",
+      "prompt": "想把 name = \"Ada\" 变为 \"Eda\"，哪种写法可行？",
+      "options": ["name[0] = \"E\"", "name = \"E\" + name[1:]", "name.append(\"E\")", "name[0].replace(\"A\", \"E\")"], "answer": 1,
+      "explanation": "字符串不能原地修改字符；需要构造一个新字符串并重新赋值。",
+      "hint": "字符串支持读取和切片，但不支持给某个字符位置赋值。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方字符串不可变概念编写"
+    },
+    {
+      "id": "q3", "type": "mcq", "title": "列表别名与副本", "difficulty": "基础",
+      "prompt": "哪一行能为一维整数列表 scores 建立新的外层列表？",
+      "options": ["backup = scores", "backup = scores[:]", "backup = [scores]", "backup = str(scores)"], "answer": 1,
+      "explanation": "scores[:] 返回浅拷贝，与 list.copy() 效果相同；backup = scores 只是让两个变量指向同一列表。",
+      "hint": "官方教程把 list.copy() 描述为与 a[:] 类似。",
+      "sourceIndex": 1, "attribution": "依据 Python 官方 list.copy 与切片说明编写"
+    },
+    {
+      "id": "q4", "type": "short", "title": "split 与负下标", "difficulty": "基础",
+      "prompt": "写出唯一输出，只写一行。",
+      "code": "parts = \"  Ada   78  92  \".split()\nprint(parts[0] + \"-\" + parts[-1])",
+      "answer": "Ada-92",
+      "explanation": "不传参数的 split() 按连续空白拆分，不会保留首尾空白；parts[0] 是 Ada，parts[-1] 是 92。",
+      "hint": "先写出 split 后得到的三个字符串。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方字符串方法与索引概念编写"
+    },
+    {
+      "id": "q5", "type": "code", "title": "一行成绩切片报告", "difficulty": "应用",
+      "prompt": "读入一行空格分隔的整数成绩。空行输出 No data；否则依次输出数量、首项、末项、中间切片和反转后的列表，格式严格按测试所示。只使用今天已学的字符串、列表、循环、索引和切片。",
+      "starter": "line = input().strip()\n\nif not line:\n    print(\"No data\")\nelse:\n    # TODO：split、转成整数列表并输出报告\n    pass\n",
+      "answer": "line = input().strip()\n\nif not line:\n    print(\"No data\")\nelse:\n    scores = []\n    for text in line.split():\n        scores.append(int(text))\n\n    print(f\"Count: {len(scores)}\")\n    print(f\"First: {scores[0]}\")\n    print(f\"Last: {scores[-1]}\")\n    print(f\"Middle: {scores[1:-1]}\")\n    print(f\"Reversed: {scores[::-1]}\")",
+      "explanation": "先处理空行，避免访问不存在的首尾元素。split 得到字符串列表，再逐项转换为 int。切片对单元素和较短列表也安全。网站不执行代码，请在本地运行。",
+      "tests": [
+        {"input": "70 80 90 100", "output": "Count: 4\nFirst: 70\nLast: 100\nMiddle: [80, 90]\nReversed: [100, 90, 80, 70]"},
+        {"input": "60", "output": "Count: 1\nFirst: 60\nLast: 60\nMiddle: []\nReversed: [60]"},
+        {"input": "", "output": "No data"}
+      ],
+      "hint": "空行先返回；非空时用 line.split()，再用 append(int(text)) 建立列表。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方字符串、列表与切片概念原创，非官方原题"
+    }
+  ]
+}
+
