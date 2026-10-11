@@ -28,7 +28,7 @@
 
 工作日每天一个 Python 小项目；周六、周日合做一个综合项目。Java 数据结构作为同一场景的可选加练。笔记依旧每天更新，原练习网站继续可用；项目的代码、步骤与复盘按账号保存，个人记录不上传到公开仓库。
 
-本周末：[成绩分析小工具](projects/2026-10/weekend-2026-10-10.md)。下周一：[把成绩报告变成函数](projects/2026-10/daily-2026-10-12.md)。
+今日项目：[把成绩报告变成函数](projects/2026-10/daily-2026-10-12.md)。下一项目：[学生档案小字典](projects/2026-10/daily-2026-10-13.md)（预告，内容准备完成后开放）。
 
 ## 📅 学习安排
 
@@ -46,6 +46,7 @@
 | 2026-10-09 | [Python 变量、类型与输入输出](notes/2026-10/2026-10-09_Python变量类型与输入输出.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site) · [题目数据](questions/2026-10/2026-10-09_Python变量类型与输入输出.json) |
 | 2026-10-10 | [条件判断与循环](notes/2026-10/2026-10-10_条件判断与循环.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site) · [题目数据](questions/2026-10/2026-10-10_条件判断与循环.json) |
 | 2026-10-11 | [字符串、列表与切片](notes/2026-10/2026-10-11_字符串列表与切片.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-11_字符串列表与切片.json) |
+| 2026-10-12 | [函数参数与返回值](notes/2026-10/2026-10-12_函数参数与返回值.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-12_函数参数与返回值.json) |
 <!-- DAILY_NOTES_END -->
 
 ## ✅ 学习方法
