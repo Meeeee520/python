@@ -104,14 +104,14 @@
   ],
   "sources": [
     {
-      "title": "Python 官方教程：控制流程",
-      "url": "https://docs.python.org/3/tutorial/controlflow.html",
-      "attribution": "原创项目；按官方的 if、for、range 与 while 概念设计。"
+      "title": "Python 官方教程：定义函数",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+      "attribution": "原创项目；按官方的 def、参数、局部变量与 return 概念设计。"
     },
     {
-      "title": "Python 官方教程：列表与字符串",
-      "url": "https://docs.python.org/3/tutorial/introduction.html",
-      "attribution": "周日用列表与切片做扩展；不是官方原题。"
+      "title": "CS50P Lecture 0：Functions 与 Returning Values",
+      "url": "https://cs50.harvard.edu/python/notes/0/",
+      "attribution": "用于核对参数、实参与返回值讲解；不是官方原题。"
     }
   ]
 }
