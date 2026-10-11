@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-12",
+  "topic": "函数参数与返回值",
+  "stage": "函数与数据组织",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-12_函数参数与返回值.md",
+  "collectedAt": "2026-10-12",
+  "sources": [
+    {"title": "Python 官方教程：定义函数", "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions", "kind": "官方概念与示例来源"},
+    {"title": "CS50P Lecture 0：Functions 与 Returning Values", "url": "https://cs50.harvard.edu/python/notes/0/", "kind": "官方课程来源"}
+  ],
+  "questions": [
+    {
+      "id": "q1", "type": "mcq", "title": "参数与实参", "difficulty": "入门",
+      "prompt": "在 def square(n): return n * n 和 square(4) 中，哪项正确？",
+      "options": ["n 是实参，4 是参数", "n 是参数，4 是实参", "n 和 4 都是参数", "n 和 4 都是返回值"],
+      "answer": 1,
+      "explanation": "函数定义中的 n 是参数；调用时传入的 4 是实参。",
+      "hint": "参数出现在定义里，实参出现在调用里。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方函数定义概念编写"
+    },
+    {
+      "id": "q2", "type": "mcq", "title": "没有显式 return", "difficulty": "入门",
+      "prompt": "下面代码最后一行输出什么？", "code": "def greet(name):\n    print(\"Hello\", name)\n\nresult = greet(\"Ada\")\nprint(result)",
+      "options": ["Ada", "Hello Ada", "None", "程序没有输出"],
+      "answer": 2,
+      "explanation": "函数先打印 Hello Ada；因为没有显式返回值，result 得到 None，所以最后一行输出 None。",
+      "hint": "题目问最后一行，不是函数内部那一行。",
+      "sourceIndex": 1, "attribution": "依据 CS50P 函数与返回值概念编写"
+    },
+    {
+      "id": "q3", "type": "mcq", "title": "return 的效果", "difficulty": "基础",
+      "prompt": "下面函数返回什么？", "code": "def check(score):\n    if score >= 60:\n        return \"Pass\"\n    return \"Fail\"\n    print(\"Done\")\n\nprint(check(80))",
+      "options": ["Pass", "Fail", "Pass 后再输出 Done", "Done"],
+      "answer": 0,
+      "explanation": "80 满足条件，return Pass 立即结束调用；后面的 print 不会执行。",
+      "hint": "return 不只是产生结果，也会结束本次调用。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方 return 语义编写"
+    },
+    {
+      "id": "q4", "type": "short", "title": "局部变量追踪", "difficulty": "基础",
+      "prompt": "写出两行唯一输出。", "code": "def add_one(x):\n    x += 1\n    return x\n\nnumber = 5\nprint(add_one(number))\nprint(number)",
+      "answer": "6\n5",
+      "explanation": "x 是函数内的局部名字；调用返回 6，但外部 number 没有重新赋值，仍为 5。",
+      "hint": "分别追踪函数内 x 和函数外 number。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方局部符号表概念编写"
+    },
+    {
+      "id": "q5", "type": "code", "title": "封装成绩统计", "difficulty": "应用",
+      "prompt": "实现 summarize(scores)：空列表返回 None；否则返回平均分、最高分、最低分、及格人数四个值。不要在函数内 input 或 print。网站不执行代码，请在本地调用测试。",
+      "starter": "def summarize(scores):\n    # TODO：处理空列表并返回四个统计量\n    pass\n",
+      "answer": "def summarize(scores):\n    if not scores:\n        return None\n\n    total = 0\n    highest = scores[0]\n    lowest = scores[0]\n    passed = 0\n    for score in scores:\n        total += score\n        if score > highest:\n            highest = score\n        if score < lowest:\n            lowest = score\n        if score >= 60:\n            passed += 1\n\n    return total / len(scores), highest, lowest, passed",
+      "explanation": "先处理空列表，避免访问 scores[0] 或除以 0。函数只计算并返回，让调用方决定怎样输入和显示。",
+      "tests": [
+        {"input": "summarize([60, 80, 100])", "output": "(80.0, 100, 60, 3)"},
+        {"input": "summarize([59])", "output": "(59.0, 59, 59, 0)"},
+        {"input": "summarize([])", "output": "None"}
+      ],
+      "hint": "先写 if not scores: return None；其余统计量在循环结束后一起 return。",
+      "sourceIndex": 0, "attribution": "依据 Python 官方函数与 return 概念原创，非官方原题"
+    }
+  ]
+}
+
