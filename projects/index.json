@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-12",
+  "updatedAt": "2026-10-13",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -76,7 +76,7 @@
       "javaPath": "projects/2026-10/daily-2026-10-13.json",
       "guidePath": "projects/2026-10/daily-2026-10-13.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-13.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-14",
