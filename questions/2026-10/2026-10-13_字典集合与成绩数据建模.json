@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "topic": "字典集合与成绩数据建模",
+  "stage": "函数与数据组织",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-13_字典集合与成绩数据建模.md",
+  "collectedAt": "2026-10-13",
+  "sources": [
+    {
+      "title": "Python 官方教程：Sets 与 Dictionaries",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#sets",
+      "kind": "官方概念与示例来源"
+    },
+    {
+      "title": "CS50P Lecture 2：Dictionaries",
+      "url": "https://cs50.harvard.edu/python/notes/2/#dictionaries",
+      "kind": "官方课程来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "创建空集合",
+      "difficulty": "入门",
+      "prompt": "哪一行会创建一个空集合？",
+      "options": [
+        "items = {}",
+        "items = []",
+        "items = set()",
+        "items = dict()"
+      ],
+      "answer": 2,
+      "explanation": "{} 创建空字典；空集合必须使用 set()。",
+      "hint": "花括号没有元素时已被字典占用。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方集合创建规则编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "安全查询不存在的学号",
+      "difficulty": "入门",
+      "prompt": "records 中可能没有 S999。哪种写法会在不存在时得到字符串 Not found，而不是抛出 KeyError？",
+      "options": [
+        "records[\"S999\"]",
+        "records.get(\"S999\", \"Not found\")",
+        "records.add(\"S999\")",
+        "records.index(\"S999\")"
+      ],
+      "answer": 1,
+      "explanation": "dict.get(key, default) 在键不存在时返回指定默认值。方括号访问不存在的键会抛出 KeyError。",
+      "hint": "寻找能接收默认值的方法。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 dict.get 说明编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "字典成员检查",
+      "difficulty": "基础",
+      "prompt": "给定 records = {\"S001\": {\"score\": 86}}，表达式 \"S001\" in records 检查什么？",
+      "options": [
+        "是否存在键 S001",
+        "是否存在值 S001",
+        "是否存在成绩 1",
+        "是否至少有一条记录"
+      ],
+      "answer": 0,
+      "explanation": "对字典直接使用 in 时，检查的是键。",
+      "hint": "字典迭代和成员检查默认面向 keys。",
+      "sourceIndex": 1,
+      "attribution": "依据 CS50P 字典键访问与遍历概念编写"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "嵌套字典与 get 追踪",
+      "difficulty": "基础",
+      "prompt": "写出两行唯一输出。",
+      "code": "records = {\"S001\": {\"name\": \"Ada\", \"score\": 86}}\nprint(records.get(\"S999\", {\"score\": \"N/A\"})[\"score\"])\nprint(\"S001\" in records)",
+      "answer": "N/A\nTrue",
+      "explanation": "S999 不存在，get 返回默认字典，所以第一行取到 N/A；S001 是存在的键，所以第二行是 True。",
+      "hint": "先确定 get 返回哪个字典，再取 score。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 get 与成员检查概念原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "添加唯一学生记录",
+      "difficulty": "应用",
+      "prompt": "实现 add_student(records, student_id, name, score)：学号已存在时返回 False 且不覆盖旧记录；否则保存嵌套记录并返回 True。网站不执行代码，请在本地调用测试。",
+      "starter": "def add_student(records, student_id, name, score):\n    # TODO：重复学号不能覆盖旧记录\n    pass\n",
+      "answer": "def add_student(records, student_id, name, score):\n    if student_id in records:\n        return False\n    records[student_id] = {\"name\": name, \"score\": score}\n    return True",
+      "explanation": "先检查键是否存在；只有不存在时才写入，因此保留第一条记录。返回布尔值让调用方决定怎样提示。",
+      "tests": [
+        {
+          "input": "records = {}\nprint(add_student(records, \"S001\", \"Ada\", 86))\nprint(records[\"S001\"])",
+          "output": "True\n{'name': 'Ada', 'score': 86}"
+        },
+        {
+          "input": "records = {\"S001\": {\"name\": \"Ada\", \"score\": 86}}\nprint(add_student(records, \"S001\", \"Ann\", 99))\nprint(records[\"S001\"])",
+          "output": "False\n{'name': 'Ada', 'score': 86}"
+        },
+        {
+          "input": "records = {}\nprint(add_student(records, \"S010\", \"Cai\", 60))\nprint(len(records))",
+          "output": "True\n1"
+        }
+      ],
+      "hint": "把 student_id in records 放在赋值语句之前。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方字典键唯一性与成员检查概念原创，非官方原题"
+    }
+  ]
+}

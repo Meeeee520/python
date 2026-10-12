@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-13",
+  "track": "python",
+  "title": "学生档案小字典",
+  "goal": "按学号保存姓名和成绩，拒绝重复学号，并能查询存在或不存在的学生。第一条同学记录不能被重复输入覆盖。",
+  "prerequisites": [
+    "函数参数与返回值",
+    "今日笔记：字典、集合与成绩数据建模"
+  ],
+  "filename": "student_records.py",
+  "runCommand": "python3 student_records.py",
+  "starter": "def add_student(records, seen_ids, student_id, name, score):\n    # TODO：重复学号返回 False；否则写入嵌套字典、更新集合并返回 True。\n    pass\n\n\ndef find_student(records, student_id):\n    # TODO：安全返回记录或 None。\n    pass\n\n\ncount = int(input())\nrecords = {}\nseen_ids = set()\n# TODO：读入 count 行：学号 姓名 成绩。重复时输出 Duplicate: 学号。\n# TODO：再读一个待查询学号，输出档案数量和查询结果。\n",
+  "steps": [
+    {
+      "id": "model-record",
+      "day": "2026-10-13",
+      "title": "设计一条学生记录",
+      "instruction": "用学号作为外层字典的键，用 {\"name\": 姓名, \"score\": 成绩} 作为值。先手写两条记录并读取其中一名学生的成绩。",
+      "hint": "目标结构是 records[student_id][\"score\"]，不再维护容易错位的平行列表。",
+      "knowledge": [
+        "dict",
+        "嵌套记录",
+        "键值关系"
+      ]
+    },
+    {
+      "id": "reject-duplicate",
+      "day": "2026-10-13",
+      "title": "拒绝重复学号",
+      "instruction": "完成 add_student。seen_ids 使用 set() 创建；学号出现过就返回 False，不写入 records，保证第一条记录不被覆盖。",
+      "hint": "先判断 student_id in seen_ids，成功写入后再调用 seen_ids.add(student_id)。",
+      "knowledge": [
+        "set",
+        "成员检查",
+        "唯一键"
+      ]
+    },
+    {
+      "id": "safe-query",
+      "day": "2026-10-13",
+      "title": "安全查询存在与不存在的学生",
+      "instruction": "find_student 使用 get。查询后先输出 Students: 档案数；找到时输出学号、姓名、两位小数成绩，找不到时输出 Not found: 学号。",
+      "hint": "不要直接 records[query_id]；先保存 get 的结果，再用 is None 分支。",
+      "knowledge": [
+        "get",
+        "None",
+        "f-string"
+      ]
+    },
+    {
+      "id": "verify-cases",
+      "day": "2026-10-13",
+      "title": "用边界样例验收",
+      "instruction": "依次运行正常查询、重复学号、零条记录和单条记录四组样例。确认重复输入不覆盖首条记录，空字典查询不崩溃。",
+      "hint": "今天先假定人数和成绩输入是数字；非数字异常处理留到 10 月 15 日。",
+      "knowledge": [
+        "边界测试",
+        "函数职责"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "records-normal",
+      "label": "三名学生并查询中间记录",
+      "input": "3\nS001 Ada 86\nS002 Bob 92\nS003 Cai 60\nS002\n",
+      "output": "Students: 3\nS002 Bob 92.00",
+      "purpose": "检查嵌套记录写入、档案数量和存在查询。"
+    },
+    {
+      "id": "records-duplicate",
+      "label": "重复学号保留第一次记录",
+      "input": "3\nS001 Ada 86\nS001 Ann 99\nS002 Bob 70\nS001\n",
+      "output": "Duplicate: S001\nStudents: 2\nS001 Ada 86.00",
+      "purpose": "重复记录不覆盖原姓名和成绩，也不增加档案数量。"
+    },
+    {
+      "id": "records-empty",
+      "label": "空档案查询",
+      "input": "0\nS999\n",
+      "output": "Students: 0\nNot found: S999",
+      "purpose": "空字典也能通过 get 安全查询。"
+    },
+    {
+      "id": "records-single",
+      "label": "单条记录查询不存在学号",
+      "input": "1\nS010 Dee 100\nS011\n",
+      "output": "Students: 1\nNot found: S011",
+      "purpose": "区分存在的唯一记录和不存在的查询键。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "dict-key",
+      "question": "为什么学号适合做 records 的键，而姓名不一定适合？",
+      "answer": "字典键必须唯一；学号通常能唯一标识学生，而姓名可能重复。"
+    },
+    {
+      "id": "get-vs-brackets",
+      "question": "为什么查询函数使用 get 而不直接写 records[student_id]？",
+      "answer": "查询目标可能不存在；get 会返回 None，调用方可正常分支，而方括号会抛出 KeyError。"
+    },
+    {
+      "id": "empty-set",
+      "question": "为什么 seen_ids 不能写成 {}？",
+      "answer": "{} 创建的是空字典；空集合必须使用 set()。"
+    }
+  ],
+  "solution": "def add_student(records, seen_ids, student_id, name, score):\n    if student_id in seen_ids:\n        return False\n    records[student_id] = {\"name\": name, \"score\": score}\n    seen_ids.add(student_id)\n    return True\n\n\ndef find_student(records, student_id):\n    return records.get(student_id)\n\n\ncount = int(input())\nrecords = {}\nseen_ids = set()\nfor _ in range(max(0, count)):\n    student_id, name, score_text = input().split()\n    score = float(score_text)\n    if not add_student(records, seen_ids, student_id, name, score):\n        print(f\"Duplicate: {student_id}\")\n\nquery_id = input().strip()\nstudent = find_student(records, query_id)\nprint(f\"Students: {len(records)}\")\nif student is None:\n    print(f\"Not found: {query_id}\")\nelse:\n    print(f\"{query_id} {student['name']} {student['score']:.2f}\")\n",
+  "solutionExplanation": [
+    "外层字典让学号直接对应一条学生记录，内层字典用有意义的键保存姓名和成绩。",
+    "添加前检查集合，重复学号立即返回，避免字典赋值覆盖旧记录。",
+    "查询使用 get，让不存在的学号成为正常分支而不是异常。",
+    "本阶段先专注数据建模；非数字与成绩范围校验留到异常处理学习日。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：Sets 与 Dictionaries",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#sets",
+      "attribution": "原创项目；按官方的集合去重、字典唯一键、get 与成员检查概念设计。"
+    },
+    {
+      "title": "CS50P Lecture 2：Dictionaries",
+      "url": "https://cs50.harvard.edu/python/notes/2/#dictionaries",
+      "attribution": "用于核对以学生信息讲解键值关系的入门方式；不是课程原题。"
+    }
+  ]
+}
