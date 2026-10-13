@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-14",
+  "track": "python",
+  "title": "成绩筛选器与安全备份",
+  "goal": "按最低分筛选学生记录，在筛选结果中预览加 1 分，同时保证原记录和备份都不被修改。",
+  "prerequisites": [
+    "列表、字典与函数",
+    "今日笔记：列表推导式与可变对象"
+  ],
+  "filename": "score_filter_backup.py",
+  "runCommand": "python3 score_filter_backup.py",
+  "starter": "def copy_records(records):\n    # TODO：让外层列表和每个简单字典都独立。\n    pass\n\n\ndef select_records(records, minimum):\n    # TODO：筛选达标记录，并复制每个入选字典。\n    pass\n\n\ndef format_records(records):\n    # TODO：空列表返回 None；否则返回 Name score, ...\n    pass\n\n\nn = max(0, int(input()))\nrecords = []\nfor _ in range(n):\n    name, score_text = input().split()\n    records.append({\"name\": name, \"score\": int(score_text)})\nminimum = int(input())\n\n# TODO：制作备份、筛选、给筛选结果预览加 1 分，再输出三行。\n",
+  "steps": [
+    {
+      "id": "copy-each-record",
+      "day": "2026-10-14",
+      "title": "制作独立的简单记录备份",
+      "instruction": "完成 copy_records，用列表推导式遍历 records，并对每个 record 调用 copy()。不要只写 records.copy()。",
+      "hint": "目标形式是 [record.copy() for record in records]；外层和每个一层字典都要重新创建。",
+      "knowledge": [
+        "列表推导式",
+        "浅拷贝",
+        "可变对象"
+      ]
+    },
+    {
+      "id": "filter-copies",
+      "day": "2026-10-14",
+      "title": "筛选并复制达标记录",
+      "instruction": "完成 select_records，只保留 score >= minimum 的记录，并让结果里的字典与原记录独立。",
+      "hint": "推导式最前面放 record.copy()，末尾写 if record[\"score\"] >= minimum。",
+      "knowledge": [
+        "条件筛选",
+        "字典复制"
+      ]
+    },
+    {
+      "id": "preview-bonus",
+      "day": "2026-10-14",
+      "title": "只修改筛选结果",
+      "instruction": "给 selected 中每条记录预览加 1 分，最高不超过 100。依次输出 Selected、Original 和 Backup，确认后两者完全相同。",
+      "hint": "record[\"score\"] = min(100, record[\"score\"] + 1)。如果 selected 为空，循环自然执行零次。",
+      "knowledge": [
+        "独立对象",
+        "边界值"
+      ]
+    },
+    {
+      "id": "verify-copy-boundaries",
+      "day": "2026-10-14",
+      "title": "验证无匹配与空输入",
+      "instruction": "运行正常筛选、无人达标和零条记录三组样例；确认空结果显示 None，程序不会访问不存在的第 0 项。",
+      "hint": "format_records 可以使用 join；先判断 records 是否为空。",
+      "knowledge": [
+        "空列表",
+        "本地测试"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "filter-normal",
+      "label": "筛选两人并预览加分",
+      "input": "3\nAda 86\nBob 55\nCai 72\n60\n",
+      "output": "Selected: Ada 87, Cai 73\nOriginal: Ada 86, Bob 55, Cai 72\nBackup: Ada 86, Bob 55, Cai 72",
+      "purpose": "检查筛选、逐项复制与修改隔离。"
+    },
+    {
+      "id": "filter-none",
+      "label": "没有人成绩达标",
+      "input": "2\nAda 40\nBob 59\n60\n",
+      "output": "Selected: None\nOriginal: Ada 40, Bob 59\nBackup: Ada 40, Bob 59",
+      "purpose": "空筛选结果不访问不存在的元素，原记录仍被正确备份。"
+    },
+    {
+      "id": "filter-empty",
+      "label": "零条记录",
+      "input": "0\n60\n",
+      "output": "Selected: None\nOriginal: None\nBackup: None",
+      "purpose": "三个列表都为空时仍输出确定结果。"
+    },
+    {
+      "id": "filter-cap",
+      "label": "满分不超过 100",
+      "input": "1\nAda 100\n60\n",
+      "output": "Selected: Ada 100\nOriginal: Ada 100\nBackup: Ada 100",
+      "purpose": "预览加分使用上界，且不会改动原记录。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "assignment-is-binding",
+      "question": "为什么不能用 backup = records 制作安全备份？",
+      "answer": "赋值只让两个变量绑定同一个列表；通过任意一个变量修改都会影响同一对象。"
+    },
+    {
+      "id": "outer-copy-limit",
+      "question": "为什么 records.copy() 仍不足以保护列表中的字典？",
+      "answer": "它只复制外层列表，内部字典仍是共享引用；应逐项 record.copy()。"
+    },
+    {
+      "id": "comprehension-order",
+      "question": "[record.copy() for record in records if 条件] 中三部分各做什么？",
+      "answer": "for 逐项遍历，if 决定是否保留，最前面的表达式决定放入新列表的值。"
+    }
+  ],
+  "solution": "def copy_records(records):\n    return [record.copy() for record in records]\n\n\ndef select_records(records, minimum):\n    return [record.copy() for record in records\n            if record[\"score\"] >= minimum]\n\n\ndef format_records(records):\n    if not records:\n        return \"None\"\n    return \", \".join(\n        f\"{record['name']} {record['score']}\" for record in records\n    )\n\n\nn = max(0, int(input()))\nrecords = []\nfor _ in range(n):\n    name, score_text = input().split()\n    records.append({\"name\": name, \"score\": int(score_text)})\nminimum = int(input())\n\nbackup = copy_records(records)\nselected = select_records(records, minimum)\nfor record in selected:\n    record[\"score\"] = min(100, record[\"score\"] + 1)\n\nprint(\"Selected: \" + format_records(selected))\nprint(\"Original: \" + format_records(records))\nprint(\"Backup: \" + format_records(backup))\n",
+  "solutionExplanation": [
+    "copy_records 同时新建外层列表和每个一层字典，避免通过备份修改原记录。",
+    "select_records 把筛选与逐项复制合在一个清楚的列表推导式中。",
+    "预览加分只发生在 selected 的新字典上，因此 Original 与 Backup 保持相同。",
+    "空输入和无人达标都由空列表及 format_records 的 None 分支自然处理；异常输入留到 10 月 15 日。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：List Comprehensions",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions",
+      "attribution": "原创项目；按官方推导式的映射与筛选语法设计。"
+    },
+    {
+      "title": "Python 标准库：Shallow and Deep Copy Operations",
+      "url": "https://docs.python.org/3/library/copy.html",
+      "attribution": "用于核对赋值、浅拷贝和内部引用共享；不是官方原题。"
+    }
+  ]
+}
