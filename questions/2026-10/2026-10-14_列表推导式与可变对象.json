@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-14",
+  "topic": "列表推导式与可变对象",
+  "stage": "函数与数据组织",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-14_列表推导式与可变对象.md",
+  "collectedAt": "2026-10-14",
+  "sources": [
+    {
+      "title": "Python 官方教程：List Comprehensions",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions",
+      "kind": "官方概念与示例来源"
+    },
+    {
+      "title": "Python 标准库：Shallow and Deep Copy Operations",
+      "url": "https://docs.python.org/3/library/copy.html",
+      "kind": "官方复制语义来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "筛选及格成绩",
+      "difficulty": "入门",
+      "prompt": "scores = [58, 60, 91, 43]。哪个列表推导式会得到 [60, 91]？",
+      "options": [
+        "[score for score in scores if score >= 60]",
+        "[score if score >= 60 for score in scores]",
+        "[scores for score in scores >= 60]",
+        "[score >= 60 for score in scores]"
+      ],
+      "answer": 0,
+      "explanation": "筛选式推导的顺序是：结果表达式、for 子句、if 条件。最前面的 score 是要放进新列表的值。",
+      "hint": "把普通循环的 for 和 if 按原顺序放到表达式后面。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方列表推导式语法编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "赋值后的共享修改",
+      "difficulty": "入门",
+      "prompt": "运行 scores = [86, 72]; backup = scores; backup[0] = 0 后，scores 的值是什么？",
+      "options": [
+        "[86, 72]",
+        "[0, 72]",
+        "[0, 0]",
+        "程序抛出异常"
+      ],
+      "answer": 1,
+      "explanation": "赋值语句没有复制列表；scores 和 backup 指向同一个可变对象，所以通过 backup 的修改也能从 scores 看见。",
+      "hint": "先判断 backup 是新列表，还是同一个列表的另一个名字。",
+      "sourceIndex": 1,
+      "attribution": "依据 Python 官方复制模块对赋值绑定关系的说明编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "浅拷贝仍共享内部列表",
+      "difficulty": "基础",
+      "prompt": "运行 a = [[1], [2]]; b = a.copy(); b[0].append(9) 后，a[0] 是什么？",
+      "options": [
+        "[1]",
+        "[9]",
+        "[1, 9]",
+        "会抛出 IndexError"
+      ],
+      "answer": 2,
+      "explanation": "a.copy() 新建外层列表，但其中的两个内部列表仍与 a 共享。向 b[0] 追加 9，也就修改了 a[0] 指向的同一个内部列表。",
+      "hint": "浅拷贝只复制最外层容器。",
+      "sourceIndex": 1,
+      "attribution": "依据 Python 官方浅拷贝定义原创"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "独立二维列表追踪",
+      "difficulty": "基础",
+      "prompt": "写出两行唯一输出。",
+      "code": "grid = [[0] * 2 for _ in range(2)]\ngrid[0][1] = 7\nprint(grid[0])\nprint(grid[1])",
+      "answer": "[0, 7]\n[0, 0]",
+      "explanation": "推导式每次循环都执行 [0] * 2，因此两行是不同列表；修改第 0 行不会改变第 1 行。",
+      "hint": "数一数 [0] * 2 一共被创建了几次。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方嵌套列表推导式概念原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "筛选并复制学生记录",
+      "difficulty": "应用",
+      "prompt": "实现 select_and_copy(records, minimum)：返回成绩不低于 minimum 的记录；返回列表中的每个字典都应与原字典独立。网站不执行代码，请在本地调用测试。",
+      "starter": "def select_and_copy(records, minimum):\n    # TODO：筛选，并为每条入选记录创建新字典\n    pass\n",
+      "answer": "def select_and_copy(records, minimum):\n    return [record.copy() for record in records\n            if record[\"score\"] >= minimum]",
+      "explanation": "if 负责筛选；record.copy() 为每条简单字典记录创建新字典。这样修改结果中的 score 不会改动原记录。",
+      "tests": [
+        {
+          "input": "records = [{\"name\": \"Ada\", \"score\": 86}, {\"name\": \"Bob\", \"score\": 55}]\nselected = select_and_copy(records, 60)\nselected[0][\"score\"] = 100\nprint(selected)\nprint(records)",
+          "output": "[{'name': 'Ada', 'score': 100}]\n[{'name': 'Ada', 'score': 86}, {'name': 'Bob', 'score': 55}]"
+        },
+        {
+          "input": "print(select_and_copy([], 60))",
+          "output": "[]"
+        },
+        {
+          "input": "records = [{\"name\": \"Cai\", \"score\": 59}]\nprint(select_and_copy(records, 60))",
+          "output": "[]"
+        }
+      ],
+      "hint": "把 record.copy() 放在推导式最前面，把分数条件放在末尾。",
+      "sourceIndex": 1,
+      "attribution": "依据 Python 官方列表推导式与浅拷贝概念原创，非官方原题"
+    }
+  ]
+}
