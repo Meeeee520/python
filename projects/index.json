@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-14",
+  "updatedAt": "2026-10-15",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -116,8 +116,9 @@
         "范围校验"
       ],
       "javaConcepts": [
-        "ArrayList",
-        "add/get/remove"
+        "连续循环",
+        "嵌套循环",
+        "O(log n)"
       ],
       "minutes": 55,
       "javaMinutes": 20,
@@ -125,7 +126,7 @@
       "javaPath": "projects/2026-10/daily-2026-10-15.json",
       "guidePath": "projects/2026-10/daily-2026-10-15.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-15.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-16",
