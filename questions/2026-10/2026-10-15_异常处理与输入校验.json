@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "topic": "异常处理与输入校验",
+  "stage": "函数与数据组织",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-15_异常处理与输入校验.md",
+  "collectedAt": "2026-10-15",
+  "sources": [
+    {
+      "title": "Python 官方教程：Errors and Exceptions",
+      "url": "https://docs.python.org/3/tutorial/errors.html",
+      "kind": "官方异常处理来源"
+    },
+    {
+      "title": "CS50P Lecture 3：Exceptions",
+      "url": "https://cs50.harvard.edu/python/notes/3/",
+      "kind": "官方课程来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "整数字符串转换",
+      "difficulty": "入门",
+      "prompt": "执行 int(\"86.5\") 会发生什么？",
+      "options": [
+        "返回整数 86",
+        "返回浮点数 86.5",
+        "抛出 ValueError",
+        "抛出 IndexError"
+      ],
+      "answer": 2,
+      "explanation": "字符串 86.5 不是合法的整数字面形式，int() 不能直接把它转换成整数，因此抛出 ValueError。",
+      "hint": "int() 接收的是整数字符串，不会自动先转成 float 再截断。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方异常与转换示例编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "最小化 try 范围",
+      "difficulty": "基础",
+      "prompt": "只考虑把文本转换成整数时可能产生的 ValueError，哪种做法更合适？",
+      "options": [
+        "把整个程序都放进 try，并捕获 Exception",
+        "只把 score = int(text) 放进 try，并捕获 ValueError",
+        "不用 try，发现程序退出后再重新运行",
+        "把范围判断放进 except ValueError"
+      ],
+      "answer": 1,
+      "explanation": "try 应只保护预期可能失败的最少代码；精确捕获 ValueError 不会掩盖无关的程序错误。",
+      "hint": "问自己：哪一行真的可能因为文本格式而失败？",
+      "sourceIndex": 1,
+      "attribution": "依据 CS50P 对最小 try 范围的讲解编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "转换成功与范围有效",
+      "difficulty": "基础",
+      "prompt": "成绩文本是 \"-1\"。关于 int(text) 和 0 <= score <= 100，哪项正确？",
+      "options": [
+        "转换失败并抛出 ValueError",
+        "转换成功，范围判断也通过",
+        "转换成功，但范围判断不通过",
+        "转换结果是字符串 -1"
+      ],
+      "answer": 2,
+      "explanation": "-1 是合法整数字符串，所以转换成功；但它小于 0，因此成绩范围校验失败。",
+      "hint": "格式正确与业务范围正确是两道检查。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 异常语义与范围判断概念原创"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "解析结果追踪",
+      "difficulty": "基础",
+      "prompt": "写出三行唯一输出。",
+      "code": "def parse_score(text):\n    try:\n        score = int(text)\n    except ValueError:\n        return \"Not an integer\"\n    if not 0 <= score <= 100:\n        return \"Out of range\"\n    return \"OK\"\n\nfor raw in [\"80\", \"cat\", \"101\"]:\n    print(parse_score(raw))",
+      "answer": "OK\nNot an integer\nOut of range",
+      "explanation": "80 转换且范围合法；cat 在转换时触发 ValueError；101 可转换但超出 0 到 100。",
+      "hint": "每个输入依次经历转换检查和范围检查。",
+      "sourceIndex": 1,
+      "attribution": "依据 CS50P 输入异常处理流程原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "解析并校验成绩",
+      "difficulty": "应用",
+      "prompt": "实现 parse_score(text)：空白返回 (None, \"Empty input\")；非整数返回 (None, \"Not an integer\")；不在 0 到 100 时返回 (None, \"Out of range\")；合法时返回 (score, \"OK\")。网站不执行代码，请在本地调用测试。",
+      "starter": "def parse_score(text):\n    # TODO：依次处理空白、整数转换和范围校验\n    pass\n",
+      "answer": "def parse_score(text):\n    text = text.strip()\n    if not text:\n        return None, \"Empty input\"\n    try:\n        score = int(text)\n    except ValueError:\n        return None, \"Not an integer\"\n    if not 0 <= score <= 100:\n        return None, \"Out of range\"\n    return score, \"OK\"",
+      "explanation": "先处理空白，再只围绕 int() 捕获 ValueError，最后用普通 if 做范围校验；每种失败都有稳定且明确的返回结果。",
+      "tests": [
+        {
+          "input": "print(parse_score(\"86\"))",
+          "output": "(86, 'OK')"
+        },
+        {
+          "input": "print(parse_score(\" cat \"))",
+          "output": "(None, 'Not an integer')"
+        },
+        {
+          "input": "print(parse_score(\"101\"))",
+          "output": "(None, 'Out of range')"
+        },
+        {
+          "input": "print(parse_score(\"   \"))",
+          "output": "(None, 'Empty input')"
+        }
+      ],
+      "hint": "strip 后先判断空字符串；try 中只保留 score = int(text)。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方异常处理规则原创，非官方原题"
+    }
+  ]
+}
