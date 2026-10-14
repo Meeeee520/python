@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-15",
+  "track": "python",
+  "title": "不会轻易崩溃的录入器",
+  "goal": "持续读取成绩，分别提示空输入、非整数和越界，直到得到 0 到 100 的整数；合法值 0 也必须正确接受。",
+  "prerequisites": [
+    "函数、条件判断与 while 循环",
+    "今日笔记：异常处理与输入校验"
+  ],
+  "filename": "safe_score_input.py",
+  "runCommand": "python3 safe_score_input.py",
+  "starter": "def parse_score(text):\n    # TODO：返回 (value, message)。\n    pass\n\n\ndef read_score():\n    # TODO：持续读取，失败时打印 Invalid: 原因，成功时返回整数。\n    pass\n\n\nscore = read_score()\nprint(f\"Accepted: {score}\")\n",
+  "steps": [
+    {
+      "id": "separate-empty-input",
+      "day": "2026-10-15",
+      "title": "先识别空输入",
+      "instruction": "在 parse_score 中先 strip；结果为空时返回 (None, \"Empty input\")，不要交给 int()。",
+      "hint": "if not text 能同时处理空字符串和只含空格的字符串。",
+      "knowledge": [
+        "strip",
+        "空字符串"
+      ]
+    },
+    {
+      "id": "catch-value-error",
+      "day": "2026-10-15",
+      "title": "精确处理整数转换失败",
+      "instruction": "只把 score = int(text) 放入 try；except ValueError 时返回 (None, \"Not an integer\")。",
+      "hint": "不要捕获 Exception，也不要把后续范围判断放进 try。",
+      "knowledge": [
+        "try/except",
+        "ValueError"
+      ]
+    },
+    {
+      "id": "validate-score-range",
+      "day": "2026-10-15",
+      "title": "校验 0 到 100",
+      "instruction": "转换成功后检查 0 <= score <= 100；越界返回 (None, \"Out of range\")，否则返回 (score, \"OK\")。",
+      "hint": "0 和 100 都是合法边界；不要写 if value 判断成功，因为 0 的布尔值为 False。",
+      "knowledge": [
+        "范围校验",
+        "边界值"
+      ]
+    },
+    {
+      "id": "retry-until-valid",
+      "day": "2026-10-15",
+      "title": "循环直到输入合法",
+      "instruction": "read_score 使用 while True。value is not None 时 return；否则打印 Invalid: message 并进入下一轮。",
+      "hint": "必须写 is not None，才能正确接受成绩 0。",
+      "knowledge": [
+        "while True",
+        "return",
+        "None"
+      ]
+    },
+    {
+      "id": "verify-invalid-sequences",
+      "day": "2026-10-15",
+      "title": "验证连续错误与合法边界",
+      "instruction": "运行直接合法、连续两次错误、空输入、0 分和 100 分样例，核对提示顺序与最终 Accepted。",
+      "hint": "每行输入对应一次 input()；程序遇到错误后不应退出。",
+      "knowledge": [
+        "边界测试",
+        "错误恢复"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "input-valid-first",
+      "label": "第一次输入即合法",
+      "input": "86\n",
+      "output": "Accepted: 86",
+      "purpose": "合法输入不产生多余错误提示。"
+    },
+    {
+      "id": "input-retry-sequence",
+      "label": "非整数和越界后重试",
+      "input": "cat\n105\n86\n",
+      "output": "Invalid: Not an integer\nInvalid: Out of range\nAccepted: 86",
+      "purpose": "不同失败原因分别提示，随后仍能接受合法输入。"
+    },
+    {
+      "id": "input-empty",
+      "label": "空行后重试",
+      "input": "\n60\n",
+      "output": "Invalid: Empty input\nAccepted: 60",
+      "purpose": "空输入不交给 int()，程序继续读取下一行。"
+    },
+    {
+      "id": "input-zero-boundary",
+      "label": "先越界再接受 0 分",
+      "input": "-1\n0\n",
+      "output": "Invalid: Out of range\nAccepted: 0",
+      "purpose": "使用 is not None，避免把合法整数 0 当成失败。"
+    },
+    {
+      "id": "input-hundred-boundary",
+      "label": "小数字符串后接受 100 分",
+      "input": "86.5\n100\n",
+      "output": "Invalid: Not an integer\nAccepted: 100",
+      "purpose": "int() 拒绝小数字符串，同时接受合法上边界 100。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "format-vs-range",
+      "question": "为什么 ValueError 和范围越界要分开处理？",
+      "answer": "ValueError 表示文本无法转成整数；越界值已经是整数，只是不符合成绩规则，应由普通条件判断处理。"
+    },
+    {
+      "id": "specific-exception",
+      "question": "为什么捕获 ValueError 比捕获 Exception 更合适？",
+      "answer": "它只处理预期的转换失败，不会把无关的代码错误伪装成输入错误。"
+    },
+    {
+      "id": "zero-is-valid",
+      "question": "为什么成功判断必须写 value is not None，而不是 if value？",
+      "answer": "合法成绩 0 的布尔值是 False；is not None 才能区分 0 与失败标记 None。"
+    }
+  ],
+  "solution": "def parse_score(text):\n    text = text.strip()\n    if not text:\n        return None, \"Empty input\"\n\n    try:\n        score = int(text)\n    except ValueError:\n        return None, \"Not an integer\"\n\n    if not 0 <= score <= 100:\n        return None, \"Out of range\"\n    return score, \"OK\"\n\n\ndef read_score():\n    while True:\n        value, message = parse_score(input())\n        if value is not None:\n            return value\n        print(\"Invalid: \" + message)\n\n\nscore = read_score()\nprint(f\"Accepted: {score}\")\n",
+  "solutionExplanation": [
+    "parse_score 把空白、格式错误和范围错误分成三个稳定结果，便于单独测试。",
+    "try 只包围 int() 转换，并只捕获 ValueError，避免掩盖其他程序错误。",
+    "read_score 在失败时继续循环，成功时 return 同时结束循环和函数。",
+    "使用 value is not None，因此合法边界 0 不会被误判为失败。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：Errors and Exceptions",
+      "url": "https://docs.python.org/3/tutorial/errors.html",
+      "attribution": "原创项目；按官方 try/except、ValueError 与异常匹配规则设计。"
+    },
+    {
+      "title": "CS50P Lecture 3：Exceptions",
+      "url": "https://cs50.harvard.edu/python/notes/3/",
+      "attribution": "用于核对最小 try 范围和循环重试输入的入门方式；不是课程原题。"
+    }
+  ]
+}
