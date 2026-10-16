@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-16",
+  "track": "python",
+  "title": "关掉程序也还在的成绩文件",
+  "goal": "把姓名和成绩写入 UTF-8 CSV，再从磁盘重新加载并输出记录数与平均分，验证数据能够跨程序运行保留。",
+  "prerequisites": [
+    "函数、字典、列表与输入校验",
+    "今日笔记：文件读写与 CSV"
+  ],
+  "filename": "persistent_scores.py",
+  "runCommand": "python3 persistent_scores.py",
+  "starter": "import csv\n\nPATH = \"scores.csv\"\nFIELDS = [\"name\", \"score\"]\n\ndef save_records(path, records):\n    pass\n\ndef load_records(path):\n    pass\n\ndef main():\n    # TODO：读取记录、保存、重新加载并输出摘要。\n    pass\n\nif __name__ == \"__main__\":\n    main()\n",
+  "steps": [
+    {
+      "id": "collect-records",
+      "day": "2026-10-16",
+      "title": "把输入整理成字典列表",
+      "instruction": "读取记录数量；每条记录依次读取姓名和整数成绩，保存为 {name, score}。",
+      "hint": "n 小于 0 时按 0 处理；今天的重点是持久化，输入格式保持简单。",
+      "knowledge": ["字典", "列表"]
+    },
+    {
+      "id": "write-csv",
+      "day": "2026-10-16",
+      "title": "写入 UTF-8 CSV",
+      "instruction": "用 with、encoding=\"utf-8\"、newline=\"\" 和 DictWriter 写表头及全部记录。",
+      "hint": "即使 records 为空也写表头。",
+      "knowledge": ["with", "DictWriter"]
+    },
+    {
+      "id": "read-csv",
+      "day": "2026-10-16",
+      "title": "从磁盘重新加载",
+      "instruction": "用 DictReader 读取，并把 score 字段转回 int。",
+      "hint": "CSV 字段默认是字符串。",
+      "knowledge": ["DictReader", "类型转换"]
+    },
+    {
+      "id": "verify-persistence",
+      "day": "2026-10-16",
+      "title": "用加载结果生成摘要",
+      "instruction": "只根据 load_records 的返回值打印 Saved 和 Average；空数据打印 Average: N/A。",
+      "hint": "这样能证明输出来自文件，而不是仍在内存里的原列表。",
+      "knowledge": ["持久化", "边界测试"]
+    }
+  ],
+  "tests": [
+    {
+      "id": "save-three",
+      "label": "三条记录",
+      "input": "3\nAda\n90\nLin\n75\nKai\n60\n",
+      "output": "Saved: 3\nAverage: 75.00",
+      "purpose": "验证多行写入、重新读取和平均分。"
+    },
+    {
+      "id": "save-empty",
+      "label": "空数据",
+      "input": "0\n",
+      "output": "Saved: 0\nAverage: N/A",
+      "purpose": "只写表头，读取为空且不发生除零。"
+    },
+    {
+      "id": "save-unicode-zero",
+      "label": "UTF-8 姓名和 0 分",
+      "input": "1\n小林\n0\n",
+      "output": "Saved: 1\nAverage: 0.00",
+      "purpose": "验证 UTF-8 与合法下边界 0。"
+    },
+    {
+      "id": "save-upper-boundary",
+      "label": "100 分边界",
+      "input": "1\nAda\n100\n",
+      "output": "Saved: 1\nAverage: 100.00",
+      "purpose": "验证单记录与合法上边界。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "why-with",
+      "question": "为什么文件操作优先使用 with？",
+      "answer": "离开代码块时会正确关闭文件，即使中途发生异常，也能释放资源并降低未完整写入风险。"
+    },
+    {
+      "id": "why-convert",
+      "question": "为什么加载 CSV 后要把 score 转回 int？",
+      "answer": "CSV 默认返回字符串字段；只有恢复数字类型后才能正确求和和比较。"
+    },
+    {
+      "id": "prove-load",
+      "question": "为什么摘要应根据重新加载的列表计算？",
+      "answer": "这样才能验证真正写入并读回了文件，而不是继续使用内存中的原始列表。"
+    }
+  ],
+  "solution": "import csv\n\nPATH = \"scores.csv\"\nFIELDS = [\"name\", \"score\"]\n\ndef save_records(path, records):\n    with open(path, \"w\", encoding=\"utf-8\", newline=\"\") as file:\n        writer = csv.DictWriter(file, fieldnames=FIELDS)\n        writer.writeheader()\n        writer.writerows(records)\n\ndef load_records(path):\n    with open(path, \"r\", encoding=\"utf-8\", newline=\"\") as file:\n        reader = csv.DictReader(file)\n        return [{\"name\": row[\"name\"], \"score\": int(row[\"score\"])} for row in reader]\n\ndef main():\n    n = max(0, int(input()))\n    records = []\n    for _ in range(n):\n        name = input().strip()\n        score = int(input())\n        records.append({\"name\": name, \"score\": score})\n\n    save_records(PATH, records)\n    loaded = load_records(PATH)\n    print(f\"Saved: {len(loaded)}\")\n    if loaded:\n        average = sum(record[\"score\"] for record in loaded) / len(loaded)\n        print(f\"Average: {average:.2f}\")\n    else:\n        print(\"Average: N/A\")\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solutionExplanation": [
+    "写入函数始终创建表头，因此空列表也能被 DictReader 正确识别。",
+    "加载函数把 score 从字符串恢复为 int，摘要才能进行数值计算。",
+    "摘要只使用重新加载的数据，直接验证写入—关闭—读取的完整流程。",
+    "空数据单独输出 N/A，避免除以 0。"
+  ],
+  "sources": [
+    {
+      "title": "Python 官方教程：Reading and Writing Files",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files",
+      "attribution": "原创项目；依据官方 with、文件模式与关闭规则设计。"
+    },
+    {
+      "title": "Python 标准库：csv",
+      "url": "https://docs.python.org/3/library/csv.html",
+      "attribution": "用于核对 DictReader、DictWriter 与 newline 参数；不是官方原题。"
+    }
+  ]
+}
