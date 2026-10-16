@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "projectId": "weekend-2026-10-17",
+  "track": "python",
+  "title": "我的 CSV 成绩账本",
+  "goal": "用函数、字典、输入校验和 CSV 持久化完成一个两日成绩账本；周六搭建录入与存档，周日继续统计、边界测试和模块化复盘。",
+  "prerequisites": [
+    "函数、字典、列表与异常处理",
+    "文件读写、CSV 与 main 入口"
+  ],
+  "filename": "gradebook.py",
+  "runCommand": "python3 gradebook.py",
+  "starter": "import csv\n\nPATH = \"gradebook.csv\"\nFIELDS = [\"name\", \"score\"]\n\ndef parse_score(text):\n    pass\n\ndef save_records(path, records):\n    pass\n\ndef load_records(path):\n    pass\n\ndef summarize(records):\n    pass\n\ndef main():\n    pass\n\nif __name__ == \"__main__\":\n    main()\n",
+  "steps": [
+    {
+      "id": "sat-parse-score",
+      "day": "2026-10-17",
+      "title": "写可单独测试的成绩解析函数",
+      "instruction": "parse_score 接收字符串；非整数或不在 0 到 100 时返回 None，合法时返回整数。",
+      "hint": "try 中只放 int(text)，范围检查放在外面。",
+      "knowledge": ["ValueError", "范围校验"]
+    },
+    {
+      "id": "sat-collect-records",
+      "day": "2026-10-17",
+      "title": "录入姓名与成绩字典",
+      "instruction": "读取 n 条记录；无效成绩打印 Invalid score 并重试，合法后追加到 records。",
+      "hint": "姓名和成绩组成 {name, score}。",
+      "knowledge": ["字典", "while 重试"]
+    },
+    {
+      "id": "sat-save-load",
+      "day": "2026-10-17",
+      "title": "完成 CSV 保存和加载",
+      "instruction": "使用 UTF-8、newline=\"\"、DictWriter 与 DictReader；加载时恢复整数类型。",
+      "hint": "空列表也要写表头。",
+      "knowledge": ["CSV", "持久化"]
+    },
+    {
+      "id": "sun-summary",
+      "day": "2026-10-18",
+      "title": "根据加载结果计算摘要",
+      "instruction": "summarize 返回记录数、平均分与最高分；空数据的平均分和最高分为 None。",
+      "hint": "统计函数不要调用 input 或 print。",
+      "knowledge": ["纯函数", "空数据"]
+    },
+    {
+      "id": "sun-main-entry",
+      "day": "2026-10-18",
+      "title": "整理 main 入口与职责",
+      "instruction": "main 只负责输入、组合函数和输出；使用 __name__ 入口保护，导入时不启动交互。",
+      "hint": "把可复用逻辑留在独立函数里。",
+      "knowledge": ["__main__", "模块拆分"]
+    },
+    {
+      "id": "sun-boundary-tests",
+      "day": "2026-10-18",
+      "title": "完成边界测试与复盘",
+      "instruction": "运行空数据、连续非法成绩、中文姓名、0 分和 100 分；解释 CSV 字段为何要恢复类型。",
+      "hint": "每次测试在独立目录运行，避免旧文件干扰。",
+      "knowledge": ["边界测试", "调试"]
+    }
+  ],
+  "tests": [
+    {
+      "id": "ledger-normal",
+      "label": "三条正常记录",
+      "input": "3\nAda\n90\nLin\n75\nKai\n60\n",
+      "output": "Records: 3\nAverage: 75.00\nHighest: 90",
+      "purpose": "验证录入、CSV 往返和统计。"
+    },
+    {
+      "id": "ledger-empty",
+      "label": "空账本",
+      "input": "0\n",
+      "output": "Records: 0\nAverage: N/A\nHighest: N/A",
+      "purpose": "空数据不除零，也不调用 max。"
+    },
+    {
+      "id": "ledger-retry",
+      "label": "非整数和越界后重试",
+      "input": "1\nAda\ncat\n105\n80\n",
+      "output": "Invalid score\nInvalid score\nRecords: 1\nAverage: 80.00\nHighest: 80",
+      "purpose": "验证异常与范围校验后仍能继续。"
+    },
+    {
+      "id": "ledger-unicode-zero",
+      "label": "中文姓名与 0 分",
+      "input": "1\n小林\n0\n",
+      "output": "Records: 1\nAverage: 0.00\nHighest: 0",
+      "purpose": "验证 UTF-8 和合法下边界。"
+    },
+    {
+      "id": "ledger-upper-boundary",
+      "label": "100 分边界",
+      "input": "1\nAda\n100\n",
+      "output": "Records: 1\nAverage: 100.00\nHighest: 100",
+      "purpose": "验证合法上边界与单记录。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "separate-logic-io",
+      "question": "为什么 parse_score 和 summarize 不直接读键盘？",
+      "answer": "只依赖参数并返回结果的函数可以被导入、复用，并用固定数据快速测试。"
+    },
+    {
+      "id": "csv-types",
+      "question": "为什么 CSV 加载后必须恢复 score 的整数类型？",
+      "answer": "CSV 默认提供字符串字段，不转换就无法正确求和、比较与计算平均分。"
+    },
+    {
+      "id": "main-guard",
+      "question": "入口保护解决什么问题？",
+      "answer": "直接运行时启动 main；作为模块导入时不自动执行输入流程。"
+    }
+  ],
+  "solution": "import csv\n\nPATH = \"gradebook.csv\"\nFIELDS = [\"name\", \"score\"]\n\ndef parse_score(text):\n    try:\n        score = int(text)\n    except ValueError:\n        return None\n    if not 0 <= score <= 100:\n        return None\n    return score\n\ndef save_records(path, records):\n    with open(path, \"w\", encoding=\"utf-8\", newline=\"\") as file:\n        writer = csv.DictWriter(file, fieldnames=FIELDS)\n        writer.writeheader()\n        writer.writerows(records)\n\ndef load_records(path):\n    try:\n        with open(path, \"r\", encoding=\"utf-8\", newline=\"\") as file:\n            reader = csv.DictReader(file)\n            return [{\"name\": row[\"name\"], \"score\": int(row[\"score\"])} for row in reader]\n    except FileNotFoundError:\n        return []\n\ndef summarize(records):\n    if not records:\n        return {\"count\": 0, \"average\": None, \"highest\": None}\n    scores = [record[\"score\"] for record in records]\n    return {\"count\": len(records), \"average\": sum(scores) / len(scores), \"highest\": max(scores)}\n\ndef main():\n    n = max(0, int(input()))\n    records = []\n    for _ in range(n):\n        name = input().strip()\n        while True:\n            score = parse_score(input())\n            if score is not None:\n                break\n            print(\"Invalid score\")\n        records.append({\"name\": name, \"score\": score})\n\n    save_records(PATH, records)\n    result = summarize(load_records(PATH))\n    print(f\"Records: {result['count']}\")\n    if result[\"average\"] is None:\n        print(\"Average: N/A\")\n        print(\"Highest: N/A\")\n    else:\n        print(f\"Average: {result['average']:.2f}\")\n        print(f\"Highest: {result['highest']}\")\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solutionExplanation": [
+    "parse_score 精确处理转换失败与范围错误，合法 0 不会被误判。",
+    "CSV 写入与加载分别封装，加载时恢复 score 的整数类型。",
+    "summarize 是纯函数，空数据先返回 None 边界结果。",
+    "main 只组合输入、持久化、统计与输出；入口保护让模块可以安全导入。"
+  ],
+  "sources": [
+    {"title":"Python 官方教程：Reading and Writing Files","url":"https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files","attribution":"原创项目；依据 with 和文本文件读写规则设计。"},
+    {"title":"Python 标准库：csv","url":"https://docs.python.org/3/library/csv.html","attribution":"用于核对 DictReader、DictWriter、UTF-8 与 newline 参数。"},
+    {"title":"Python 官方教程：Modules 与 __main__","url":"https://docs.python.org/3/library/__main__.html","attribution":"用于入口保护与可导入函数设计；不是官方原题。"}
+  ]
+}
