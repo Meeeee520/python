@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-16",
+  "topic": "文件读写与CSV",
+  "stage": "函数与数据组织",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-16_文件读写与CSV.md",
+  "collectedAt": "2026-10-17",
+  "sources": [
+    {
+      "title": "Python 官方教程：Reading and Writing Files",
+      "url": "https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files",
+      "kind": "Python 官方文件读写教程"
+    },
+    {
+      "title": "Python 标准库：csv",
+      "url": "https://docs.python.org/3/library/csv.html",
+      "kind": "Python 官方 CSV API 文档"
+    },
+    {
+      "title": "CS50P Lecture 6：File I/O",
+      "url": "https://cs50.harvard.edu/python/notes/6/",
+      "kind": "大学课程来源"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "覆盖写模式",
+      "difficulty": "入门",
+      "prompt": "文件已存在并含有旧数据。执行 open(path, \"w\", encoding=\"utf-8\") 后开始写入，旧数据会怎样？",
+      "options": [
+        "保留并从末尾追加",
+        "先被清空，再写入新内容",
+        "自动移动到备份文件",
+        "一定抛出 FileExistsError"
+      ],
+      "answer": 1,
+      "explanation": "文本模式 w 会在打开时截断已有文件；要在末尾追加才使用 a。",
+      "hint": "w 是 write，不是 append。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方文件模式说明编写"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "with 的作用",
+      "difficulty": "基础",
+      "prompt": "处理文件时优先使用 with open(...) as file 的主要理由是什么？",
+      "options": [
+        "它会自动把文本转成整数",
+        "它会自动创建 CSV 表头",
+        "离开代码块时会正确关闭文件，即使发生异常",
+        "它让所有文件都变成只读"
+      ],
+      "answer": 2,
+      "explanation": "with 管理文件上下文，离开代码块时自动关闭文件，减少资源未释放或内容未完整写出的风险。",
+      "hint": "想一想不再使用文件对象时要做什么。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 with 文件示例编写"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "CSV 字段类型",
+      "difficulty": "基础",
+      "prompt": "用 csv.DictReader 读取一行 name,Ada 与 score,90 后，row[\"score\"] 默认是什么？",
+      "options": [
+        "整数 90",
+        "浮点数 90.0",
+        "字符串 \"90\"",
+        "布尔值 True"
+      ],
+      "answer": 2,
+      "explanation": "CSV 是文本格式，reader 默认返回字符串字段；需要 int(row[\"score\"]) 才恢复整数。",
+      "hint": "官方文档说明 reader 默认不自动做数据类型转换。",
+      "sourceIndex": 1,
+      "attribution": "依据 Python csv 官方文档编写"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "追踪 DictReader 输出",
+      "difficulty": "基础",
+      "prompt": "写出唯一一行输出。",
+      "code": "import csv\nimport io\n\ntext = \"name,score\\nAda,90\\n\"\nrow = next(csv.DictReader(io.StringIO(text)))\nscore = int(row[\"score\"])\nprint(row[\"name\"], score, type(score).__name__)",
+      "answer": "Ada 90 int",
+      "explanation": "DictReader 先得到字符串字段；int() 转换后 score 是整数，因此类型名是 int。",
+      "hint": "分别追踪姓名、转换后的值和类型名。",
+      "sourceIndex": 1,
+      "attribution": "依据 csv.DictReader 行为原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "保存并重新加载成绩",
+      "difficulty": "应用",
+      "prompt": "实现 save_scores(path, records) 和 load_scores(path)。CSV 列为 name、score；使用 UTF-8、newline=\"\" 和字典读写器。读取时把 score 转回 int；文件不存在时返回 []。网站不执行代码，请在本地调用测试。",
+      "starter": "import csv\n\nFIELDS = [\"name\", \"score\"]\n\ndef save_scores(path, records):\n    pass\n\ndef load_scores(path):\n    pass\n",
+      "answer": "import csv\n\nFIELDS = [\"name\", \"score\"]\n\ndef save_scores(path, records):\n    with open(path, \"w\", encoding=\"utf-8\", newline=\"\") as file:\n        writer = csv.DictWriter(file, fieldnames=FIELDS)\n        writer.writeheader()\n        writer.writerows(records)\n\ndef load_scores(path):\n    try:\n        with open(path, \"r\", encoding=\"utf-8\", newline=\"\") as file:\n            reader = csv.DictReader(file)\n            return [{\"name\": row[\"name\"], \"score\": int(row[\"score\"])} for row in reader]\n    except FileNotFoundError:\n        return []",
+      "explanation": "保存时始终写表头；加载时在 with 块内读取并恢复整数类型，只精确处理文件不存在这一种预期情况。",
+      "tests": [
+        {
+          "input": "save_scores(\"scores.csv\", [{\"name\": \"Ada\", \"score\": 90}]); print(load_scores(\"scores.csv\"))",
+          "output": "[{'name': 'Ada', 'score': 90}]"
+        },
+        {
+          "input": "save_scores(\"scores.csv\", []); print(load_scores(\"scores.csv\"))",
+          "output": "[]"
+        },
+        {
+          "input": "save_scores(\"scores.csv\", [{\"name\": \"小林\", \"score\": 0}]); print(load_scores(\"scores.csv\"))",
+          "output": "[{'name': '小林', 'score': 0}]"
+        },
+        {
+          "input": "print(load_scores(\"missing.csv\"))",
+          "output": "[]"
+        }
+      ],
+      "hint": "DictWriter 先 writeheader，再 writerows；load 只捕获 FileNotFoundError。",
+      "sourceIndex": 1,
+      "attribution": "依据 Python 官方 csv API 原创，非官方原题"
+    }
+  ]
+}
