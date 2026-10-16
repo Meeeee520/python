@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-15",
+  "updatedAt": "2026-10-17",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -142,8 +142,9 @@
         "csv.DictWriter"
       ],
       "javaConcepts": [
-        "动态数组",
-        "扩容与复制"
+        "数组扩容",
+        "Arrays.copyOf",
+        "O(n) 复制"
       ],
       "minutes": 60,
       "javaMinutes": 20,
@@ -151,7 +152,7 @@
       "javaPath": "projects/2026-10/daily-2026-10-16.json",
       "guidePath": "projects/2026-10/daily-2026-10-16.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-16.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "weekend-2026-10-17",
@@ -159,26 +160,24 @@
       "endDate": "2026-10-18",
       "kind": "weekend",
       "title": "我的 CSV 成绩账本",
-      "description": "把本周函数、字典、校验和文件串成可反复打开的程序。周六整合，周日拆模块与调试。",
+      "description": "周六完成校验与 CSV 存档，周日继续统计、边界测试和模块化复盘。",
       "concepts": [
-        "函数",
-        "字典",
-        "异常",
         "CSV",
-        "模块与调试"
+        "函数拆分",
+        "输入校验"
       ],
       "javaConcepts": [
-        "数组与顺序表",
-        "边界检查",
-        "可选：撤销与栈"
+        "数组有效长度",
+        "插入删除移动",
+        "操作成本"
       ],
-      "minutes": 180,
-      "javaMinutes": 40,
+      "minutes": 165,
+      "javaMinutes": 100,
       "pythonPath": "projects/2026-10/weekend-2026-10-17.json",
       "javaPath": "projects/2026-10/weekend-2026-10-17.json",
       "guidePath": "projects/2026-10/weekend-2026-10-17.md",
       "javaGuidePath": "projects/2026-10/weekend-2026-10-17.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-19",
@@ -194,8 +193,9 @@
         "diff/log"
       ],
       "javaConcepts": [
-        "栈",
-        "括号匹配"
+        "有效长度",
+        "数组插入",
+        "移动成本"
       ],
       "minutes": 50,
       "javaMinutes": 20,
