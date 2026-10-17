@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-18",
+  "topic": "函数与CSV综合验收",
+  "stage": "函数、数据组织与CSV综合验收",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-18_函数与CSV综合验收.md",
+  "collectedAt": "2026-10-18",
+  "sources": [
+    {
+      "title": "Python 标准库：csv",
+      "url": "https://docs.python.org/3/library/csv.html",
+      "kind": "Python 官方 CSV 文档"
+    },
+    {
+      "title": "Python 官方教程：定义函数",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#defining-functions",
+      "kind": "Python 官方函数教程"
+    },
+    {
+      "title": "Python 标准库：__main__",
+      "url": "https://docs.python.org/3/library/__main__.html",
+      "kind": "Python 官方入口文档"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "不要漏掉合法的 0 分",
+      "difficulty": "基础",
+      "prompt": "parse_score(text) 在合法时返回 0–100 的整数，无效时返回 None。哪种条件能完整保留合法成绩，包括 0？",
+      "options": [
+        "if score:",
+        "if score is not None:",
+        "if score > 0:",
+        "if score == None:"
+      ],
+      "answer": 1,
+      "explanation": "0 的布尔值为假，但不是 None。合法性应与无效标记比较，而不是检查数值是否为真。",
+      "hint": "区分合法的数值 0 与表示无效的 None。",
+      "sourceIndex": 1,
+      "attribution": "依据函数返回值与本周输入校验约定原创，非官方原题"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "空 CSV 账本的摘要",
+      "difficulty": "基础",
+      "prompt": "CSV 文件内容只有表头 name,score，没有数据行。本项目约定下，加载后应返回哪一个摘要？",
+      "options": [
+        "{\"count\": 1, \"average\": 0, \"highest\": 0}",
+        "{\"count\": 0, \"average\": None, \"highest\": None}",
+        "立即对空列表调用 max，并除以记录数",
+        "把表头当作一条学生记录"
+      ],
+      "answer": 1,
+      "explanation": "默认 DictReader 使用首行作字段名，不把表头作为数据。空账本数量为 0，平均分与最高分用 None 表示未定义。",
+      "hint": "表头描述列，不是学生数据。",
+      "sourceIndex": 0,
+      "attribution": "依据 DictReader 表头行为和本项目空数据契约原创"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "验收文件往返，应该统计哪份数据",
+      "difficulty": "应用",
+      "prompt": "现在要检查保存—加载链路是否保持成绩数据，而不只是检查内存中的计算。哪种做法最符合这一目标？",
+      "options": [
+        "只统计录入的 records，完全不读取 CSV",
+        "调用 save_records 后直接打印原内存统计，忽略加载结果",
+        "保存后重新加载，核对记录的姓名、数量与分值，再统计加载结果",
+        "捕获全部 Exception，任何失败都按空账本处理"
+      ],
+      "answer": 2,
+      "explanation": "内存统计正确不能证明文件内容正确。重新加载并比较记录内容，再统计加载结果，才能检查序列化、读取和类型恢复环节。",
+      "hint": "保存函数失效时，哪种测试仍可能显示正确平均分？",
+      "sourceIndex": 0,
+      "attribution": "依据 CSV 字典读写接口设计的原创综合验收题"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "CSV 字段类型与数值恢复",
+      "difficulty": "基础",
+      "prompt": "写出下面代码的两行准确输出。使用 csv 的默认读取设置。",
+      "code": "import csv\nrows = list(csv.DictReader([\"name,score\", \"Ada,80\", \"Lin,0\"]))\nprint(type(rows[0][\"score\"]).__name__)\nprint(sum([int(row[\"score\"]) for row in rows]))",
+      "answer": "str\n80",
+      "explanation": "默认 CSV 读取不自动把成绩转换成整数，因此类型名是 str；转换后 80 + 0 = 80。",
+      "hint": "第一行问的是类型，不是分数。",
+      "sourceIndex": 0,
+      "attribution": "依据 csv 默认字段为字符串的规则原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "从 CSV 独立生成成绩摘要",
+      "difficulty": "综合验收",
+      "prompt": "独立实现 report_from_csv(path)，只返回字典，不 input、不 print。存在的文件保证是合法 UTF-8 CSV，表头为 name,score，成绩是 0–100 的整数字符串。返回 count、average、highest；缺文件或仅表头时返回 {\"count\": 0, \"average\": None, \"highest\": None}。不要捕获并隐藏其他错误。网站不执行代码，请在新建空测试目录运行每组代码；missing_20261018.csv 保持不存在。",
+      "starter": "import csv\n\ndef report_from_csv(path):\n    pass\n",
+      "answer": "import csv\n\ndef report_from_csv(path):\n    try:\n        with open(path, \"r\", encoding=\"utf-8\", newline=\"\") as file:\n            scores = [int(row[\"score\"]) for row in csv.DictReader(file)]\n    except FileNotFoundError:\n        scores = []\n    if not scores:\n        return {\"count\": 0, \"average\": None, \"highest\": None}\n    return {\n        \"count\": len(scores),\n        \"average\": sum(scores) / len(scores),\n        \"highest\": max(scores),\n    }\n",
+      "explanation": "用 DictReader 跳过表头并恢复整数；只捕获缺文件异常；先处理空数据，再计算平均分与最高分。函数可单独测试，也可以由 main 调用。",
+      "tests": [
+        {
+          "input": "with open(\"case.csv\", \"w\", encoding=\"utf-8\", newline=\"\") as file:\n    file.write(\"name,score\\nAda,90\\nLin,60\\n\")\nprint(report_from_csv(\"case.csv\"))",
+          "output": "{'count': 2, 'average': 75.0, 'highest': 90}"
+        },
+        {
+          "input": "with open(\"case.csv\", \"w\", encoding=\"utf-8\", newline=\"\") as file:\n    file.write(\"name,score\\n\")\nprint(report_from_csv(\"case.csv\"))",
+          "output": "{'count': 0, 'average': None, 'highest': None}"
+        },
+        {
+          "input": "print(report_from_csv(\"missing_20261018.csv\"))",
+          "output": "{'count': 0, 'average': None, 'highest': None}"
+        },
+        {
+          "input": "with open(\"case.csv\", \"w\", encoding=\"utf-8\", newline=\"\") as file:\n    file.write('name,score\\n\"小林,同学\",0\\nBo,100\\n')\nprint(report_from_csv(\"case.csv\"))",
+          "output": "{'count': 2, 'average': 50.0, 'highest': 100}"
+        },
+        {
+          "input": "with open(\"case.csv\", \"w\", encoding=\"utf-8\", newline=\"\") as file:\n    file.write(\"name,score\\nAda,0\\n\")\nprint(report_from_csv(\"case.csv\"))",
+          "output": "{'count': 1, 'average': 0.0, 'highest': 0}"
+        }
+      ],
+      "hint": "先读取整数字段列表；空列表先返回空摘要。不要把合法 0 当作空账本。",
+      "sourceIndex": 0,
+      "attribution": "依据 Python 官方 CSV 与函数接口原创，非官方原题"
+    }
+  ]
+}
