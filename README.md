@@ -52,6 +52,7 @@
 | 2026-10-15 | [异常处理与输入校验](notes/2026-10/2026-10-15_异常处理与输入校验.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-15_异常处理与输入校验.json) |
 | 2026-10-16 | [文件读写与 CSV](notes/2026-10/2026-10-16_文件读写与CSV.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-16_文件读写与CSV.json) |
 | 2026-10-17 | [模块拆分与调试](notes/2026-10/2026-10-17_模块拆分与调试.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-17_模块拆分与调试.json) |
+| 2026-10-18 | [函数与 CSV 综合验收](notes/2026-10/2026-10-18_函数与CSV综合验收.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-18_函数与CSV综合验收.json) |
 <!-- DAILY_NOTES_END -->
 
 ## ✅ 学习方法
