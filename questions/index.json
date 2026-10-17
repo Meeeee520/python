@@ -54,6 +54,12 @@
       "topic": "模块拆分与调试",
       "path": "questions/2026-10/2026-10-17_模块拆分与调试.json",
       "count": 5
+    },
+    {
+      "date": "2026-10-18",
+      "topic": "函数与CSV综合验收",
+      "path": "questions/2026-10/2026-10-18_函数与CSV综合验收.json",
+      "count": 5
     }
   ]
 }
