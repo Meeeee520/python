@@ -60,6 +60,12 @@
       "topic": "函数与CSV综合验收",
       "path": "questions/2026-10/2026-10-18_函数与CSV综合验收.json",
       "count": 5
+    },
+    {
+      "date": "2026-10-19",
+      "topic": "Git版本管理基础",
+      "path": "questions/2026-10/2026-10-19_Git版本管理基础.json",
+      "count": 5
     }
   ]
 }
