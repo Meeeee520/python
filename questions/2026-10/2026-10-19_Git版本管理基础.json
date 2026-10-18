@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-19",
+  "topic": "Git版本管理基础",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-19_Git版本管理基础.md",
+  "collectedAt": "2026-10-19",
+  "sources": [
+    {
+      "title": "Pro Git：Recording Changes to the Repository",
+      "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository",
+      "kind": "Git 官方书籍"
+    },
+    {
+      "title": "Git 官方：git-diff",
+      "url": "https://git-scm.com/docs/git-diff",
+      "kind": "Git 官方命令文档"
+    },
+    {
+      "title": "Git 官方：git-status",
+      "url": "https://git-scm.com/docs/git-status",
+      "kind": "Git 官方状态文档"
+    },
+    {
+      "title": "Git 官方：git-commit",
+      "url": "https://git-scm.com/docs/git-commit",
+      "kind": "Git 官方提交文档"
+    },
+    {
+      "title": "Git 官方：git-log",
+      "url": "https://git-scm.com/docs/git-log",
+      "kind": "Git 官方历史文档"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "下一次普通提交从哪里取内容",
+      "difficulty": "入门",
+      "prompt": "使用普通 git commit -m 命令（不带 -a，也不指定文件路径）时，新修改要进入这次提交，应先放在哪里？",
+      "options": [
+        "只需在编辑器中保存到工作区",
+        "用 git add 放入暂存区",
+        "先放到 GitHub 网页，不能本地提交",
+        "写入终端的历史命令列表"
+      ],
+      "answer": 1,
+      "explanation": "普通提交以暂存区中的版本作为提交内容。保存文件只改变工作区，不自动暂存；本地提交不要求连接 GitHub。",
+      "hint": "区分保存、暂存和提交。",
+      "sourceIndex": 3,
+      "attribution": "依据 Git 官方普通提交行为原创，非官方原题"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "检查准备提交的改动",
+      "difficulty": "基础",
+      "prompt": "仓库已有至少一次提交。想查看 report.py 在暂存区相对最近提交的具体改动，哪条命令合适？",
+      "options": [
+        "git diff -- report.py",
+        "git diff --cached -- report.py",
+        "git status --short -- report.py 会显示完整逐行补丁",
+        "git log --oneline -3 会显示当前全部未提交改动"
+      ],
+      "answer": 1,
+      "explanation": "--cached 比较暂存区与 HEAD；不带 --cached 的 diff 在这里比较工作区与暂存区。status 主要列状态，log 查看历史。",
+      "hint": "题目问的是暂存区，而不是还没暂存的修改。",
+      "sourceIndex": 1,
+      "attribution": "依据 git-diff 官方比较对象说明原创"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "暂存以后又改了一次",
+      "difficulty": "基础",
+      "prompt": "一个已跟踪文件先保存为版本 A，运行 git add report.py，再保存为版本 B。未重新暂存就普通提交，会提交哪一版 report.py？",
+      "options": [
+        "版本 B，因为提交总会读取磁盘最新内容",
+        "版本 A，因为 add 时保存的版本仍在暂存区",
+        "两个版本同时作为同一个文件提交",
+        "不允许继续编辑已暂存文件"
+      ],
+      "answer": 1,
+      "explanation": "暂存记录的是运行 add 时的内容。之后保存 B 不会自动更新暂存区；若要提交 B，需要再次暂存并检查。",
+      "hint": "git add 是一次选择，不是持续同步开关。",
+      "sourceIndex": 0,
+      "attribution": "依据 Pro Git 暂存后再次编辑的概念编写原创变式"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "短状态的两列",
+      "difficulty": "应用",
+      "prompt": "仓库中只有一个已跟踪的 README.md。已有初始提交后，先把内容改为 A 并暂存，再改为不同的 B 且保存，不再暂存。没有合并、重命名或其他改动。在仓库根目录执行下列命令，写出唯一一行输出。",
+      "code": "git status --short",
+      "answer": "MM README.md",
+      "explanation": "第一列 M 表示暂存区与最近提交不同；第二列 M 表示工作区又与暂存区不同。",
+      "hint": "前提是已跟踪文件，不是刚创建的未跟踪文件。",
+      "sourceIndex": 2,
+      "attribution": "依据 git-status 官方短格式原创输出追踪题"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "language": "bash",
+      "taskKind": "terminal",
+      "title": "只提交指定文件",
+      "difficulty": "操作验收",
+      "prompt": "这是终端 Git 任务，不是 Python 函数题，网站不执行命令。在新的独立练习仓库中，README.md 已有初始提交，现在已保存本次修改，暂存区开始为空；其他已跟踪文件可能也有未暂存修改。只暂存 README.md，检查其暂存补丁，再普通提交，提交说明必须为 docs: explain empty input。不要暂存其他文件，不推送远程。tests 中 input 是提交后可在 Python 中运行的只读验收代码；测试 1 没有其他修改，测试 2 的 notes.txt 已跟踪但有未暂存修改。提交时的 SHA 和终端提交摘要不作为固定输出。",
+      "starter": "# 在独立练习仓库的终端执行，不要粘贴进 Python。\n# 仅暂存 README.md，检查暂存补丁，然后提交并查看状态。\n",
+      "answer": "git add README.md\ngit diff --cached -- README.md\ngit commit -m \"docs: explain empty input\"\ngit status --short\n",
+      "explanation": "按文件暂存避免把无关改动带进提交。提交后暂存区应无差异；测试 2 中 notes.txt 的工作区修改仍应保留。不要使用 git add . 或 git commit -a。",
+      "tests": [
+        {
+          "input": "import subprocess\nlatest = subprocess.check_output([\"git\", \"log\", \"-1\", \"--format=%s\"], text=True).strip()\nstaged = subprocess.check_output([\"git\", \"diff\", \"--cached\", \"--name-only\"], text=True).strip()\nworking = subprocess.check_output([\"git\", \"diff\", \"--name-only\"], text=True).strip()\nprint(\"Latest: \" + latest)\nprint(\"Staged: \" + (staged or \"(none)\"))\nprint(\"Working: \" + (working or \"(none)\"))\n",
+          "output": "Latest: docs: explain empty input\nStaged: (none)\nWorking: (none)"
+        },
+        {
+          "input": "import subprocess\nlatest = subprocess.check_output([\"git\", \"log\", \"-1\", \"--format=%s\"], text=True).strip()\nstaged = subprocess.check_output([\"git\", \"diff\", \"--cached\", \"--name-only\"], text=True).strip()\nworking = subprocess.check_output([\"git\", \"diff\", \"--name-only\"], text=True).strip()\nprint(\"Latest: \" + latest)\nprint(\"Staged: \" + (staged or \"(none)\"))\nprint(\"Working: \" + (working or \"(none)\"))\n",
+          "output": "Latest: docs: explain empty input\nStaged: (none)\nWorking: notes.txt"
+        }
+      ],
+      "hint": "只把一个明确文件路径交给 add；不要用批量暂存来完成这题。",
+      "sourceIndex": 3,
+      "attribution": "依据 Git 官方 add/commit/diff 语义设计的原创本地操作任务"
+    }
+  ]
+}
