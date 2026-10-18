@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-19",
+  "track": "python",
+  "title": "会记录改动的项目",
+  "goal": "用同一份 Python 成绩报告依次练习计数、增加平均分、修复空输入，实际测试后留下三次本地 Git 提交；不推送、不操作原网站或现有公开仓库。",
+  "prerequisites": [
+    "函数、列表、main 入口与空数据处理",
+    "今日笔记：Git 工作区、暂存区、提交、status/diff/log"
+  ],
+  "filename": "report.py",
+  "runCommand": "python3 report.py",
+  "starter": "def main():\n    scores = [int(part) for part in input().split()]\n    print(f\"Count: {len(scores)}\")\n\nif __name__ == \"__main__\":\n    main()\n",
+  "steps": [
+    {
+      "id": "init-and-count",
+      "day": "2026-10-19",
+      "title": "在新目录记录计数版本",
+      "instruction": "新建独立空练习目录，初始化 Git；用起始代码检查非空、空行均输出正确数量，然后按文件暂存并提交 feat: count scores。",
+      "hint": "只在这个新目录配置练习身份；不要改全局配置，不添加 remote。",
+      "knowledge": [
+        "git init",
+        "git add",
+        "git commit"
+      ]
+    },
+    {
+      "id": "add-average",
+      "day": "2026-10-19",
+      "title": "增加非空平均分",
+      "instruction": "将报告计算提取成 report(scores)，先支持非空数据；查看工作区与暂存区差异，提交 feat: add average。",
+      "hint": "每次编辑后都要保存，暂存后再编辑需要重新 add。",
+      "knowledge": [
+        "工作区与暂存区",
+        "git diff",
+        "函数返回值"
+      ]
+    },
+    {
+      "id": "handle-empty",
+      "day": "2026-10-19",
+      "title": "用边界测试推动第三次提交",
+      "instruction": "空输入暴露除零问题；先处理空列表，再用正常、空与 0 分测试确认，提交 fix: handle empty scores。",
+      "hint": "空输入与只有一个 0 的输入不能混为一谈。",
+      "knowledge": [
+        "边界测试",
+        "小步提交"
+      ]
+    },
+    {
+      "id": "inspect-history",
+      "day": "2026-10-19",
+      "title": "解释本地历史",
+      "instruction": "使用 git log -3 --format=%s 核对三条说明；再确认短状态干净。只在实际完成后记录进度。",
+      "hint": "提交 SHA 不必与别人相同；不执行 push。",
+      "knowledge": [
+        "git status",
+        "git log",
+        "本地提交"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "report-normal",
+      "label": "三条成绩",
+      "input": "60 80 100\n",
+      "output": "Count: 3\nAverage: 80.00",
+      "purpose": "核对最终版本正常统计。"
+    },
+    {
+      "id": "report-empty",
+      "label": "空行",
+      "input": "\n",
+      "output": "Count: 0\nAverage: N/A",
+      "purpose": "空列表不除零。"
+    },
+    {
+      "id": "report-zero",
+      "label": "单个合法 0",
+      "input": "0\n",
+      "output": "Count: 1\nAverage: 0.00",
+      "purpose": "区分 0 分与无记录。"
+    },
+    {
+      "id": "report-extremes",
+      "label": "0 与 100",
+      "input": "0 100\n",
+      "output": "Count: 2\nAverage: 50.00",
+      "purpose": "核对边界数值和格式。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "snapshot-not-live-link",
+      "question": "add 后继续编辑，下一次普通提交会自动使用最新工作区吗？",
+      "answer": "不会，仍使用暂存的版本；若要提交新修改，需再次 add 并检查。"
+    },
+    {
+      "id": "two-diffs",
+      "question": "两个 diff 分别比较什么？",
+      "answer": "普通 diff 在这里比较工作区与暂存区；--cached 比较暂存区与最近提交。"
+    },
+    {
+      "id": "local-not-remote",
+      "question": "commit 是否等于上传 GitHub？",
+      "answer": "不是，只记录本地历史，远程同步是另外的操作。"
+    }
+  ],
+  "solution": "def report(scores):\n    if not scores:\n        return \"Count: 0\\nAverage: N/A\"\n    return f\"Count: {len(scores)}\\nAverage: {sum(scores) / len(scores):.2f}\"\n\n\ndef main():\n    scores = [int(part) for part in input().split()]\n    print(report(scores))\n\n\nif __name__ == \"__main__\":\n    main()",
+  "solutionExplanation": [
+    "计数、平均分、空输入处理分成三次有目的的改动。",
+    "最终 report 是只返回字符串的计算函数，main 负责读取和打印。",
+    "空列表先返回 N/A；合法 0 正常参与统计。",
+    "Git 操作只在新的本地训练目录进行；命令与三版代码见同名 Markdown。"
+  ],
+  "sources": [
+    {
+      "title": "Pro Git：Recording Changes to the Repository",
+      "url": "https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository",
+      "attribution": "依据官方 Git 概念原创项目；不复制官方原题。"
+    },
+    {
+      "title": "Git 官方：git-diff",
+      "url": "https://git-scm.com/docs/git-diff",
+      "attribution": "依据官方 Git 概念原创项目；不复制官方原题。"
+    },
+    {
+      "title": "Git 官方：git-status",
+      "url": "https://git-scm.com/docs/git-status",
+      "attribution": "依据官方 Git 概念原创项目；不复制官方原题。"
+    },
+    {
+      "title": "Git 官方：git-commit",
+      "url": "https://git-scm.com/docs/git-commit",
+      "attribution": "依据官方 Git 概念原创项目；不复制官方原题。"
+    },
+    {
+      "title": "Git 官方：git-log",
+      "url": "https://git-scm.com/docs/git-log",
+      "attribution": "依据官方 Git 概念原创项目；不复制官方原题。"
+    }
+  ]
+}
