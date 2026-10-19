@@ -66,6 +66,12 @@
       "topic": "Git版本管理基础",
       "path": "questions/2026-10/2026-10-19_Git版本管理基础.json",
       "count": 5
+    },
+    {
+      "date": "2026-10-20",
+      "topic": "GitHub同步与项目说明",
+      "path": "questions/2026-10/2026-10-20_GitHub同步与项目说明.json",
+      "count": 5
     }
   ]
 }
