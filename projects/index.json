@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-19",
+  "updatedAt": "2026-10-20",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -219,8 +219,9 @@
         ".gitignore"
       ],
       "javaConcepts": [
-        "队列",
-        "先进先出"
+        "有效区间查找",
+        "数组删除左移",
+        "失败不改状态"
       ],
       "minutes": 50,
       "javaMinutes": 20,
@@ -228,7 +229,7 @@
       "javaPath": "projects/2026-10/daily-2026-10-20.json",
       "guidePath": "projects/2026-10/daily-2026-10-20.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-20.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-21",
