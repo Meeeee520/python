@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-20",
+  "topic": "GitHub同步与项目说明",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-20_GitHub同步与项目说明.md",
+  "collectedAt": "2026-10-20",
+  "sources": [
+    {
+      "title": "Git 官方：git-push",
+      "url": "https://git-scm.com/docs/git-push",
+      "kind": "Git 官方推送文档"
+    },
+    {
+      "title": "Git 官方：git-pull",
+      "url": "https://git-scm.com/docs/git-pull",
+      "kind": "Git 官方拉取文档"
+    },
+    {
+      "title": "Git 官方：gitignore",
+      "url": "https://git-scm.com/docs/gitignore",
+      "kind": "Git 官方忽略规则文档"
+    },
+    {
+      "title": "GitHub 官方：About READMEs",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "kind": "GitHub 官方项目文档"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "同步方向",
+      "difficulty": "入门",
+      "prompt": "关于本地提交与远程同步，哪项正确？",
+      "options": [
+        "保存文件就等于推送到 GitHub",
+        "git commit 会自动把所有本地文件上传到 origin",
+        "git push 尝试将本地提交更新到指定远程分支；先确认目标地址和权限",
+        "origin 是不可更改的 GitHub 密码名称"
+      ],
+      "answer": 2,
+      "explanation": "commit 记录本地版本，push 才尝试更新远程分支。origin 是常用别名，不能用它代替地址和权限核对。",
+      "hint": "先分清本地记录与远程更新。",
+      "sourceIndex": 0,
+      "attribution": "依据 Git 官方推送语义原创，非官方原题"
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "--ff-only 的停止条件",
+      "difficulty": "基础",
+      "prompt": "本地与远程已有不同的新提交，形成分叉。在这种情况下，git pull --ff-only origin main 的行为是什么？",
+      "options": [
+        "自动删除本地提交并覆盖文件",
+        "拒绝非快进整合，需要先检查分叉情况",
+        "自动强推本地历史到远程",
+        "忽略远程历史，只上传 README"
+      ],
+      "answer": 1,
+      "explanation": "--ff-only 只接受快进更新，分叉时拒绝整合，不会替你删除本地提交或创建合并提交。",
+      "hint": "失败是保护信号，不是让你强推的提示。",
+      "sourceIndex": 1,
+      "attribution": "依据 git-pull 官方 --ff-only 行为原创"
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "忽略规则不是历史清理器",
+      "difficulty": "基础",
+      "prompt": "scores.csv 已经被 Git 跟踪。现在将 scores.csv 写入 .gitignore，哪项正确？",
+      "options": [
+        "它自动从已跟踪文件和所有历史中消失",
+        "磁盘上的文件立即被删除",
+        "仅有忽略规则不会取消既有跟踪，应停止推送并先检查",
+        "所有 CSV 文件自动加密后可放心上传"
+      ],
+      "answer": 2,
+      "explanation": ".gitignore 主要影响未跟踪文件，已跟踪内容不受这一规则自动移除。不能以添加规则代替隐私检查。",
+      "hint": "未跟踪与已跟踪不同。",
+      "sourceIndex": 2,
+      "attribution": "依据 gitignore 官方说明原创"
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "README 中的 0 分样例",
+      "difficulty": "复用",
+      "prompt": "已将今日笔记的完整程序保存为 score_report.py。在同目录执行下列代码，写出两行输出；这是检查说明与实际运行是否一致。",
+      "code": "from score_report import report\nprint(report([0]))",
+      "answer": "Count: 1\nAverage: 0.00",
+      "explanation": "列表有一条合法的 0 分记录，不是空列表。README 样例应与真实程序一致。",
+      "hint": "数量看列表长度，不看分数的布尔值。",
+      "sourceIndex": 3,
+      "attribution": "依据 GitHub README 可复现使用说明原则和已有报告函数原创"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "language": "bash",
+      "taskKind": "terminal",
+      "title": "只暂存交接文件，并检查已跟踪数据",
+      "difficulty": "操作验收",
+      "prompt": "终端任务，不是 Python 函数题，网站不执行命令。在独立练习仓库中，README.md、score_report.py 与 .gitignore 已按今日笔记准备，三份文件未暂存，暂存区开始为空。只暂存这三份教学文件，并查看暂存文件清单；不提交、不推送、不删除任何文件。tests 的 input 是随后在 Python 中运行的只读检查代码：测试 1 的虚构 scores.csv 未跟踪且被忽略；测试 2 的虚构 scores.csv 已在原有提交中跟踪。若检查指出已经跟踪，保留文件并停止同步。这只是检查指定 CSV 的教学示例，不是全面的安全扫描。",
+      "starter": "# 在独立练习仓库终端执行；不要使用 git add .。\n# 仅暂存三份教学文件，再核对清单。\n",
+      "answer": "git add .gitignore README.md score_report.py\ngit diff --cached --name-only\n",
+      "tests": [
+        {
+          "input": "import subprocess\nstaged = subprocess.check_output([\"git\", \"diff\", \"--cached\", \"--name-only\"], text=True).splitlines()\ntracked = subprocess.check_output([\"git\", \"ls-files\"], text=True).splitlines()\ncsv_tracked = \"scores.csv\" in tracked\nprint(\"Staged: \" + \",\".join(sorted(staged)))\nprint(\"CSV tracked: \" + str(csv_tracked))\nprint(\"CSV review: \" + (\"REQUIRED\" if csv_tracked else \"OK\"))\n",
+          "output": "Staged: .gitignore,README.md,score_report.py\nCSV tracked: False\nCSV review: OK"
+        },
+        {
+          "input": "import subprocess\nstaged = subprocess.check_output([\"git\", \"diff\", \"--cached\", \"--name-only\"], text=True).splitlines()\ntracked = subprocess.check_output([\"git\", \"ls-files\"], text=True).splitlines()\ncsv_tracked = \"scores.csv\" in tracked\nprint(\"Staged: \" + \",\".join(sorted(staged)))\nprint(\"CSV tracked: \" + str(csv_tracked))\nprint(\"CSV review: \" + (\"REQUIRED\" if csv_tracked else \"OK\"))\n",
+          "output": "Staged: .gitignore,README.md,score_report.py\nCSV tracked: True\nCSV review: REQUIRED"
+        }
+      ],
+      "explanation": "明确列出教学文件，不批量添加数据；忽略规则不会取消测试 2 中的既有跟踪。REQUIRED 时不删除或推送，先检查。",
+      "hint": "用三个明确路径暂存；检查不要变成自动删除或公开数据。",
+      "sourceIndex": 2,
+      "attribution": "依据 gitignore 的未跟踪规则原创本地操作与只读验收任务"
+    }
+  ]
+}
