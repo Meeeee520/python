@@ -28,7 +28,9 @@
 
 工作日每天一个 Python 小项目；周六、周日合做一个综合项目。Java 数据结构作为同一场景的可选加练。笔记依旧每天更新，原练习网站继续可用；项目的代码、步骤与复盘按账号保存，个人记录不上传到公开仓库。
 
-今日项目：[会记录改动的项目](projects/2026-10/daily-2026-10-19.md)（10 月 19 日；本地 Git 小步提交）。下一项目预告：让同学也能运行的项目（内容准备完成后开放）。
+今日项目：[让同学也能运行的项目](projects/2026-10/daily-2026-10-20.md)（10 月 20 日；README、忽略规则与安全同步）。下一项目预告：成绩查找计数器（内容准备完成后开放）。
+
+上一项目：[会记录改动的项目](projects/2026-10/daily-2026-10-19.md)（10 月 19 日；历史资料与项目 ID 保留）。
 
 上个周末项目：[我的 CSV 成绩账本](projects/2026-10/weekend-2026-10-17.md)（10 月 17–18 日共用；历史资料与项目 ID 保留）。
 
@@ -56,6 +58,7 @@
 | 2026-10-17 | [模块拆分与调试](notes/2026-10/2026-10-17_模块拆分与调试.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-17_模块拆分与调试.json) |
 | 2026-10-18 | [函数与 CSV 综合验收](notes/2026-10/2026-10-18_函数与CSV综合验收.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-18_函数与CSV综合验收.json) |
 | 2026-10-19 | [Git 版本管理基础](notes/2026-10/2026-10-19_Git版本管理基础.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-19_Git版本管理基础.json) |
+| 2026-10-20 | [GitHub 同步与项目说明](notes/2026-10/2026-10-20_GitHub同步与项目说明.md) | [打开每日练习](https://python-daily-lab.sillywood.chatgpt.site/) · [题目数据](questions/2026-10/2026-10-20_GitHub同步与项目说明.json) |
 <!-- DAILY_NOTES_END -->
 
 ## ✅ 学习方法
