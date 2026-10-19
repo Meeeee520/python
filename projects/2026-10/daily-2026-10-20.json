@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-20",
+  "track": "python",
+  "title": "让同学也能运行的项目",
+  "goal": "复用成绩报告，补齐可复现 README 与忽略规则；在独立本地远程练习同步，不操作真实 GitHub 权限或个人数据。",
+  "prerequisites": [
+    "昨日的 Git 工作区、暂存区与提交",
+    "Python 函数、输入输出与空列表边界"
+  ],
+  "filename": "score_report.py",
+  "runCommand": "python3 score_report.py",
+  "starter": "def report(scores):\n    if not scores:\n        return \"Count: 0\\nAverage: N/A\"\n    return f\"Count: {len(scores)}\\nAverage: {sum(scores) / len(scores):.2f}\"\n\n\ndef main():\n    scores = [int(part) for part in input().split()]\n    print(report(scores))\n\n\nif __name__ == \"__main__\":\n    main()",
+  "steps": [
+    {
+      "id": "write-readme",
+      "day": "2026-10-20",
+      "title": "照文档从零运行",
+      "instruction": "在新建练习目录保存报告代码和 README，核对 Python 环境、运行命令、正常、空行和 0 分样例。",
+      "hint": "今日复用昨天的函数，重点是文档与代码一致。",
+      "knowledge": [
+        "README",
+        "可复现运行"
+      ]
+    },
+    {
+      "id": "ignore-generated-data",
+      "day": "2026-10-20",
+      "title": "声明不应进入版本库的文件",
+      "instruction": "添加 __pycache__/、*.pyc、scores.csv 与 .env 忽略规则；测试只用虚构数据。",
+      "hint": "忽略规则不能取消已跟踪文件。",
+      "knowledge": [
+        ".gitignore",
+        "跟踪状态"
+      ]
+    },
+    {
+      "id": "inspect-staging",
+      "day": "2026-10-20",
+      "title": "只暂存三份教学文件",
+      "instruction": "按文件添加 .gitignore、README.md 和 score_report.py，检查清单与 git ls-files；发现已跟踪私有数据则停下检查，不删除或推送。",
+      "hint": "不要使用 git add . 来凑齐任务。",
+      "knowledge": [
+        "暂存检查",
+        "资料保护"
+      ]
+    },
+    {
+      "id": "practice-sync-safely",
+      "day": "2026-10-20",
+      "title": "理解同步与拒绝信号",
+      "instruction": "阅读 push 与 pull --ff-only；可用独立本地 bare 仓库与两个工作副本模拟，不要求连接真实 GitHub。已有真实远程时不覆盖地址、不强推。",
+      "hint": "网页中的占位 URL 不能原样执行。",
+      "knowledge": [
+        "remote",
+        "push",
+        "pull --ff-only"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "report-normal",
+      "label": "三项成绩",
+      "input": "60 80 100\n",
+      "output": "Count: 3\nAverage: 80.00",
+      "purpose": "与 README 正常例一致。"
+    },
+    {
+      "id": "report-empty",
+      "label": "空行",
+      "input": "\n",
+      "output": "Count: 0\nAverage: N/A",
+      "purpose": "空输入不除零。"
+    },
+    {
+      "id": "report-zero",
+      "label": "单个 0",
+      "input": "0\n",
+      "output": "Count: 1\nAverage: 0.00",
+      "purpose": "合法 0 不能作为空输入。"
+    },
+    {
+      "id": "report-extremes",
+      "label": "0 与 100",
+      "input": "0 100\n",
+      "output": "Count: 2\nAverage: 50.00",
+      "purpose": "核对平均分与格式。"
+    }
+  ],
+  "recall": [
+    {
+      "id": "commit-push",
+      "question": "commit 与 push 有什么不同？",
+      "answer": "commit 记录本地版本，push 尝试更新已确认的远程分支。"
+    },
+    {
+      "id": "tracked-ignore",
+      "question": "添加忽略规则会取消已跟踪 CSV 吗？",
+      "answer": "不会，应先停止同步并检查，不自动删除或改写历史。"
+    },
+    {
+      "id": "ff-only-stop",
+      "question": "--ff-only 遇到分支分叉会怎样？",
+      "answer": "拒绝整合，保留本地提交；应检查情况，不强推。"
+    }
+  ],
+  "solution": "def report(scores):\n    if not scores:\n        return \"Count: 0\\nAverage: N/A\"\n    return f\"Count: {len(scores)}\\nAverage: {sum(scores) / len(scores):.2f}\"\n\n\ndef main():\n    scores = [int(part) for part in input().split()]\n    print(report(scores))\n\n\nif __name__ == \"__main__\":\n    main()",
+  "solutionExplanation": [
+    "程序复用已验证报告逻辑，不额外引入依赖。",
+    "文档、忽略规则与命令见同名 Markdown，不把已有代码当作已完成作业。",
+    "同步验证采用本地独立测试仓库，不声称测试了真实 GitHub 登录。"
+  ],
+  "sources": [
+    {
+      "title": "Git 官方：git-push",
+      "url": "https://git-scm.com/docs/git-push",
+      "attribution": "依据官方资料原创交接练习。"
+    },
+    {
+      "title": "Git 官方：git-pull",
+      "url": "https://git-scm.com/docs/git-pull",
+      "attribution": "依据官方资料原创交接练习。"
+    },
+    {
+      "title": "Git 官方：gitignore",
+      "url": "https://git-scm.com/docs/gitignore",
+      "attribution": "依据官方资料原创交接练习。"
+    },
+    {
+      "title": "GitHub 官方：About READMEs",
+      "url": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes",
+      "attribution": "依据官方资料原创交接练习。"
+    }
+  ]
+}
