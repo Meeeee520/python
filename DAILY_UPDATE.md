@@ -2,7 +2,7 @@
 
 ## 范围与步骤
 
-仅更新 GitHub 仓库 `Meeeee520/python` 的 `main` 分支。日期使用 Asia/Shanghai 的运行当天日期，从 2026-10-09 起。每次先读取本文件、`LEARNING_PLAN.md`、`README.md`、`questions/index.json` 以及前一日笔记和题目；遵守用户后来修改的计划。
+仅更新 GitHub 仓库 `MeeeeeLab/python` 的 `main` 分支。日期使用 Asia/Shanghai 的运行当天日期，从 2026-10-09 起。每次先读取本文件、`LEARNING_PLAN.md`、`README.md`、`questions/index.json` 以及前一日笔记和题目；遵守用户后来修改的计划。
 
 1. 从 LEARNING_PLAN.md 确定当日知识点。十月使用已列日期主题；之后优先检索“查询SDS教师课程”聊天的新安排。原规划缺失时沿已知主线逐步延伸，并注明延伸安排，不能冒充原聊天逐日规划。
 2. 编写当日完整中文笔记，格式按 LEARNING_PLAN.md。讲解浅显，但要有可运行代码、输出、易错点、2–3个递进练习、折叠答案及验收清单。
