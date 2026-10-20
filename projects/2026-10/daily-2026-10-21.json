@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-21",
+  "track": "python",
+  "title": "成绩查找计数器",
+  "goal": "用比较次数和独立增长实验理解输入规模，不提前引入排序或完整二分查找。",
+  "prerequisites": [
+    "Python函数、列表、循环与返回值",
+    "今日复杂度笔记"
+  ],
+  "filename": "growth_counter.py",
+  "runCommand": "python3 growth_counter.py",
+  "starter": "def find_count(scores, target):\n    # TODO: return (first_index, checks)\n    return -1, 0\n\n\ndef growth_counts(n):\n    # TODO: return (linear, pairs, halves)\n    return 0, 0, 0\n\n\ndef main():\n    scores = [int(part) for part in input().split()]\n    target = int(input())\n    index, checks = find_count(scores, target)\n    linear, pairs, halves = growth_counts(len(scores))\n    print(f\"Index: {index}\")\n    print(f\"Checks: {checks}\")\n    print(f\"Counts: {linear} {pairs} {halves}\")\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solution": "def find_count(scores, target):\n    checks = 0\n    for i, score in enumerate(scores):\n        checks += 1\n        if score == target:\n            return i, checks\n    return -1, checks\n\n\ndef growth_counts(n):\n    if n < 0:\n        raise ValueError(\"n must be nonnegative\")\n    linear = 0\n    pairs = 0\n    halves = 0\n    for _ in range(n):\n        linear += 1\n    for i in range(n):\n        for _ in range(i + 1, n):\n            pairs += 1\n    remaining = n\n    while remaining > 1:\n        remaining //= 2\n        halves += 1\n    return linear, pairs, halves\n\n\ndef main():\n    scores = [int(part) for part in input().split()]\n    target = int(input())\n    index, checks = find_count(scores, target)\n    linear, pairs, halves = growth_counts(len(scores))\n    print(f\"Index: {index}\")\n    print(f\"Checks: {checks}\")\n    print(f\"Counts: {linear} {pairs} {halves}\")\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solutionExplanation": [
+    "查找计数紧邻比较，命中即返回。",
+    "增长实验分别计数，不把三种复杂度误认为同一个查找算法。",
+    "完整实验总体O(n²)，额外空间O(1)，输入列表另算。"
+  ],
+  "steps": [
+    {
+      "id": "predict-first",
+      "day": "2026-10-21",
+      "title": "先预测再运行",
+      "instruction": "给空列表、首项命中、尾项命中、未命中写出比较次数预测。",
+      "hint": "下标从0、比较次数从1。",
+      "knowledge": [
+        "输入规模",
+        "首次匹配"
+      ]
+    },
+    {
+      "id": "count-search",
+      "day": "2026-10-21",
+      "title": "为已有查找加计数",
+      "instruction": "循环中比较前checks++，首次命中返回(i,checks)。",
+      "hint": "未命中返回(-1,checks)。",
+      "knowledge": [
+        "循环",
+        "提前返回"
+      ]
+    },
+    {
+      "id": "count-growth",
+      "day": "2026-10-21",
+      "title": "加入独立增长实验",
+      "instruction": "分别完整扫描、枚举i<j、反复整除2；不生成成对列表。",
+      "hint": "这不是查找优化，整体成对实验仍O(n²)。",
+      "knowledge": [
+        "O(n)",
+        "O(n²)",
+        "O(log n)"
+      ]
+    },
+    {
+      "id": "test-explain",
+      "day": "2026-10-21",
+      "title": "边界与复盘",
+      "instruction": "运行自测，用自己的话解释实际次数与最坏量级；不把计数器当计时器。",
+      "hint": "主项目包含笔记的第三项练习，不重复完成。",
+      "knowledge": [
+        "边界",
+        "复杂度"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "middle",
+      "label": "中间命中",
+      "input": "70 80 90 80\n90\n",
+      "output": "Index: 2\nChecks: 3\nCounts: 4 6 2",
+      "purpose": "首次命中与计数"
+    },
+    {
+      "id": "empty",
+      "label": "空列表",
+      "input": "\n80\n",
+      "output": "Index: -1\nChecks: 0\nCounts: 0 0 0",
+      "purpose": "空数据不访问元素"
+    },
+    {
+      "id": "single-zero",
+      "label": "单个0",
+      "input": "0\n0\n",
+      "output": "Index: 0\nChecks: 1\nCounts: 1 0 0",
+      "purpose": "0 是有效成绩"
+    },
+    {
+      "id": "missing",
+      "label": "未命中",
+      "input": "5 5 5\n9\n",
+      "output": "Index: -1\nChecks: 3\nCounts: 3 3 1",
+      "purpose": "最坏查找与奇数减半"
+    },
+    {
+      "id": "duplicate",
+      "label": "重复目标",
+      "input": "80 80\n80\n",
+      "output": "Index: 0\nChecks: 1\nCounts: 2 1 1",
+      "purpose": "返回首个位置"
+    }
+  ],
+  "recall": [
+    {
+      "id": "actual-worst",
+      "question": "实际比较1次是否说明查找最坏O(1)？",
+      "answer": "不是，首项命中只是当前输入，未命中仍可能检查n项。"
+    },
+    {
+      "id": "separate-nested",
+      "question": "两个先后扫描与双层嵌套有何区别？",
+      "answer": "先后n+n为线性；各自n次的嵌套n×n为平方。"
+    },
+    {
+      "id": "whole-program",
+      "question": "growth_counts整体为何不是O(log n)？",
+      "answer": "减半只是一段，成对循环的O(n²)主导整体。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "CS50x：Lecture 3, Running Time",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "attribution": "2026-10-21实际阅读，依据概念原创教学练习，非官方原题"
+    },
+    {
+      "title": "Python 官方：More Control Flow Tools",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "attribution": "2026-10-21实际阅读，依据概念原创教学练习，非官方原题"
+    }
+  ]
+}
