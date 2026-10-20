@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "topic": "时间复杂度入门",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 25,
+  "notePath": "notes/2026-10/2026-10-21_时间复杂度入门.md",
+  "collectedAt": "2026-10-21",
+  "sources": [
+    {
+      "title": "CS50x：Lecture 3, Running Time",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "kind": "Harvard 官方课程"
+    },
+    {
+      "title": "Python 官方：More Control Flow Tools",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html",
+      "kind": "Python 官方教程"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "固定访问与输入规模",
+      "difficulty": "基础",
+      "prompt": "n 为列表长度；非空列表 scores 的 scores[0] 只读取一次。在常规单位成本模型下，该操作随 n 的增长属于哪个最紧的常见量级？",
+      "answer": 0,
+      "explanation": "固定下标访问不遍历其余元素，成本不随列表长度增长。",
+      "hint": "问的是一次读取，不包括构造列表。",
+      "sourceIndex": 0,
+      "attribution": "依据已阅读官方/课程概念原创变式，非官方原题；2026-10-21 核对",
+      "options": [
+        "O(1)",
+        "O(n)",
+        "O(n²)",
+        "O(log n)"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "连续两次扫描",
+      "difficulty": "基础",
+      "prompt": "两个先后执行的循环分别完整扫描 n 项。每次循环体成本固定；最紧的常见时间量级是什么？",
+      "answer": 1,
+      "explanation": "2n 次固定工作仍是线性增长；先后执行不是嵌套相乘。",
+      "hint": "先数总次数。",
+      "sourceIndex": 0,
+      "attribution": "依据已阅读官方/课程概念原创变式，非官方原题；2026-10-21 核对",
+      "options": [
+        "O(1)",
+        "O(n)",
+        "O(n²)",
+        "O(log n)"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "减半而非减一",
+      "difficulty": "基础",
+      "prompt": "正整数 remaining 从 n 开始，每轮 remaining //= 2，直到 remaining <= 1；循环体为固定成本。对 n>=2，其最紧的常见增长量级是什么？",
+      "answer": 3,
+      "explanation": "轮数约为 log2(n)，不是 n/2 轮。这里仅做减半计数，不提前实现二分查找。",
+      "hint": "试着列出16、8、4、2、1。",
+      "sourceIndex": 0,
+      "attribution": "依据已阅读官方/课程概念原创变式，非官方原题；2026-10-21 核对",
+      "options": [
+        "O(n²)",
+        "O(n)",
+        "O(1)",
+        "O(log n)"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "三角循环的精确次数",
+      "difficulty": "基础",
+      "prompt": "写出一行输出。",
+      "answer": "6",
+      "explanation": "内层依次执行3、2、1、0次，总共6次；不是16次。",
+      "hint": "列出每个i的内层次数。",
+      "sourceIndex": 1,
+      "attribution": "依据已阅读官方/课程概念原创变式，非官方原题；2026-10-21 核对",
+      "code": "n = 4\nchecks = 0\nfor i in range(n):\n    for j in range(i + 1, n):\n        checks += 1\nprint(checks)"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "实现三种增长计数",
+      "difficulty": "基础",
+      "prompt": "实现 growth_counts(n)，n 为非负整数。返回 (完整扫描次数, i<j下标对次数, 从n整除2直到<=1的次数)。先写循环而非公式；负数抛 ValueError。只返回计数，不生成列表；网站不执行代码，在本地测试。",
+      "answer": "def growth_counts(n):\n    if n < 0:\n        raise ValueError(\"n must be nonnegative\")\n    linear = 0\n    pairs = 0\n    halves = 0\n    for _ in range(n):\n        linear += 1\n    for i in range(n):\n        for _ in range(i + 1, n):\n            pairs += 1\n    remaining = n\n    while remaining > 1:\n        remaining //= 2\n        halves += 1\n    return linear, pairs, halves\n\n",
+      "explanation": "分别计数；空规模三个0，单元素没有下标对也无需减半。完整函数因成对循环总体 O(n²)，额外空间 O(1)。",
+      "hint": "三个计数器分别对应三个循环。",
+      "sourceIndex": 1,
+      "attribution": "依据已阅读官方/课程概念原创变式，非官方原题；2026-10-21 核对",
+      "language": "python",
+      "starter": "def growth_counts(n):\n    # TODO\n    pass\n",
+      "tests": [
+        {
+          "input": "print(growth_counts(4))",
+          "output": "(4, 6, 2)"
+        },
+        {
+          "input": "print(growth_counts(0))",
+          "output": "(0, 0, 0)"
+        },
+        {
+          "input": "print(growth_counts(1))",
+          "output": "(1, 0, 0)"
+        },
+        {
+          "input": "print(growth_counts(7))",
+          "output": "(7, 21, 2)"
+        }
+      ]
+    }
+  ]
+}
