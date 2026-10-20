@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-20",
+  "updatedAt": "2026-10-21",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -245,16 +245,17 @@
         "操作计数"
       ],
       "javaConcepts": [
-        "ArrayDeque",
-        "两端操作"
+        "String.length()",
+        "charAt",
+        "字符遍历与计数"
       ],
       "minutes": 55,
-      "javaMinutes": 20,
+      "javaMinutes": 15,
       "pythonPath": "projects/2026-10/daily-2026-10-21.json",
       "javaPath": "projects/2026-10/daily-2026-10-21.json",
       "guidePath": "projects/2026-10/daily-2026-10-21.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-21.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-22",
