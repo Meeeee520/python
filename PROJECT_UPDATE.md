@@ -2,7 +2,7 @@
 
 ## 范围与来源
 
-只写 GitHub 仓库 `Meeeee520/python` 和 `Meeeee520/DataStructure` 的 main。不得修改、清空或重新部署原网站。项目网站私密托管，在线读取两个公开仓库的学习内容，不接收个人作答记录。
+只写 GitHub 仓库 `MeeeeeLab/python` 和 `MeeeeeLab/DataStructure` 的 main。不得修改、清空或重新部署原网站。项目网站私密托管，在线读取两个公开仓库的学习内容，不接收个人作答记录。
 
 先读取两仓库 `LEARNING_PLAN.md`、`DAILY_UPDATE.md`、`PROJECT_PLAN.md`、本文件、`projects/index.json`、最近的 Markdown 笔记与项目详情；用户最新规划优先。时区使用 Asia/Shanghai。当日笔记与原网站的五道题仍按既有契约分别生成，不用项目替代笔记，不要漏掉周日。
 
