@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-22",
+  "topic": "线性查找与二分查找",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 30,
+  "notePath": "notes/2026-10/2026-10-22_线性查找与二分查找.md",
+  "collectedAt": "2026-10-23",
+  "sources": [
+    {
+      "title": "Python 官方：bisect — Array bisection algorithm",
+      "url": "https://docs.python.org/3/library/bisect.html",
+      "kind": "Python 官方文档"
+    },
+    {
+      "title": "CS50x：Lecture 3 — Search and Running Time",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "kind": "Harvard 官方课程"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "线性查找的最坏情况",
+      "difficulty": "基础",
+      "prompt": "长度为 n 的列表中，目标在最后一项或不存在；逐项比较并在命中时返回。最坏时间复杂度是什么？",
+      "answer": 2,
+      "explanation": "最坏需要比较 n 项，因此是 O(n)。",
+      "hint": "不要把首项命中的一次比较当作最坏情况。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "O(1)",
+        "O(log n)",
+        "O(n)",
+        "O(n²)"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "二分查找的必要前提",
+      "difficulty": "基础",
+      "prompt": "下列哪个前提是今天手写二分查找正确工作的关键？",
+      "answer": 1,
+      "explanation": "每次根据中间值排除一半，依赖数据按相同比较规则有序。",
+      "hint": "无序时左右方向没有意义。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "列表必须没有重复项",
+        "列表必须按相同比较规则有序",
+        "列表长度必须是偶数",
+        "目标必须存在"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "bisect_left 返回什么",
+      "difficulty": "基础",
+      "prompt": "对有序列表 [10,20,20,40] 调用 bisect_left(values,20)，返回值是什么含义？",
+      "answer": 0,
+      "explanation": "返回 1，是保持有序且位于已有 20 左侧的插入点；它不是布尔命中结果。",
+      "hint": "官方文档强调 insertion point。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "1，左侧插入点",
+        "2，右侧插入点",
+        "True，表示命中",
+        "20，返回目标值"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "追踪二分边界",
+      "difficulty": "基础",
+      "prompt": "写出唯一一行输出。",
+      "answer": "3 2",
+      "explanation": "先检查下标2的30，目标更大；再检查下标3的40并命中，共2次。",
+      "hint": "mid=(low+high)//2。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "code": "values = [10,20,30,40,50]\nprint(*binary_search(values, 40))"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "实现两种查找并计数",
+      "difficulty": "基础",
+      "prompt": "实现 linear_search 与 binary_search，均返回 (首个命中下标或-1, 实际比较次数)。二分输入保证升序且元素互异；空列表合法。网站不执行，请本地测试。",
+      "answer": "def linear_search(values, target):\n    checks = 0\n    for i, value in enumerate(values):\n        checks += 1\n        if value == target:\n            return i, checks\n    return -1, checks\n\n\ndef binary_search(values, target):\n    low, high = 0, len(values) - 1\n    checks = 0\n    while low <= high:\n        mid = (low + high) // 2\n        checks += 1\n        if values[mid] == target:\n            return mid, checks\n        if values[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1, checks\n\n",
+      "explanation": "线性查找逐项扫描；二分查找维护闭区间 [low,high]，每次排除一半。额外空间均 O(1)。",
+      "hint": "先写清返回契约，再处理空列表。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "language": "python",
+      "starter": "def linear_search(values, target):\n    pass\n\n\ndef binary_search(values, target):\n    pass\n",
+      "tests": [
+        {
+          "input": "10 20 30 40 50\n40\n",
+          "output": "Linear: 3 4\nBinary: 3 2"
+        },
+        {
+          "input": "\n7\n",
+          "output": "Linear: -1 0\nBinary: -1 0"
+        },
+        {
+          "input": "7\n7\n",
+          "output": "Linear: 0 1\nBinary: 0 1"
+        },
+        {
+          "input": "1 3 5 7\n2\n",
+          "output": "Linear: -1 4\nBinary: -1 2"
+        }
+      ]
+    }
+  ]
+}
