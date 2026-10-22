@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-23",
+  "track": "python",
+  "title": "成绩排行榜",
+  "goal": "用稳定插入排序与 Python 内置排序生成同一排行榜，解释 key 与稳定性。",
+  "prerequisites": [
+    "列表、元组与函数",
+    "查找和复杂度"
+  ],
+  "filename": "ranking.py",
+  "runCommand": "python3 ranking.py",
+  "starter": "def insertion_sort_by_score(records):\n    pass\n\n\ndef main():\n    records = [(\"Amy\", 80), (\"Bo\", 95), (\"Cy\", 80), (\"Di\", 70)]\n    print(insertion_sort_by_score(records))\n    print(sorted(records, key=lambda item: item[1], reverse=True))\n    print(records)\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solution": "def insertion_sort_by_score(records):\n    result = records.copy()\n    for i in range(1, len(result)):\n        current = result[i]\n        j = i - 1\n        while j >= 0 and result[j][1] < current[1]:\n            result[j + 1] = result[j]\n            j -= 1\n        result[j + 1] = current\n    return result\n\n\ndef main():\n    records = [(\"Amy\", 80), (\"Bo\", 95), (\"Cy\", 80), (\"Di\", 70)]\n    print(insertion_sort_by_score(records))\n    print(sorted(records, key=lambda item: item[1], reverse=True))\n    print(records)\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solutionExplanation": [
+    "手写插入排序最坏O(n²)。",
+    "使用严格比较保持同分稳定，并复制输入。",
+    "真实项目优先使用内置sorted。"
+  ],
+  "steps": [
+    {
+      "id": "copy",
+      "day": "2026-10-23",
+      "title": "保护输入",
+      "instruction": "先复制records，不原地修改调用者列表。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "插入排序",
+        "稳定性"
+      ]
+    },
+    {
+      "id": "prefix",
+      "day": "2026-10-23",
+      "title": "维护有序前缀",
+      "instruction": "从第1项起，将更小成绩向右移动。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "插入排序",
+        "稳定性"
+      ]
+    },
+    {
+      "id": "stable",
+      "day": "2026-10-23",
+      "title": "守住稳定性",
+      "instruction": "同分时不移动，保留原相对顺序。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "插入排序",
+        "稳定性"
+      ]
+    },
+    {
+      "id": "compare",
+      "day": "2026-10-23",
+      "title": "与内置排序对照",
+      "instruction": "使用sorted、key和reverse核对结果。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "插入排序",
+        "稳定性"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-1",
+      "label": "正常样例",
+      "input": "print(insertion_sort_by_score([(\"Amy\",80),(\"Bo\",95),(\"Cy\",80),(\"Di\",70)]))",
+      "output": "[('Bo', 95), ('Amy', 80), ('Cy', 80), ('Di', 70)]",
+      "purpose": "验证核心路径"
+    },
+    {
+      "id": "test-2",
+      "label": "空数据",
+      "input": "print(insertion_sort_by_score([]))",
+      "output": "[]",
+      "purpose": "验证空数据"
+    },
+    {
+      "id": "test-3",
+      "label": "单元素或边界",
+      "input": "x=[(\"A\",0)]; print(insertion_sort_by_score(x)); print(x)",
+      "output": "[('A', 0)]\n[('A', 0)]",
+      "purpose": "验证最小规模与状态保护"
+    },
+    {
+      "id": "test-4",
+      "label": "未命中或非法",
+      "input": "print(insertion_sort_by_score([(\"A\",90),(\"B\",90),(\"C\",90)]))",
+      "output": "[('A', 90), ('B', 90), ('C', 90)]",
+      "purpose": "验证未命中或非法输入"
+    }
+  ],
+  "recall": [
+    {
+      "id": "strict-shift",
+      "question": "为什么右移条件使用严格小于？",
+      "answer": "同分时停止，保留原相对顺序。"
+    },
+    {
+      "id": "sort-return",
+      "question": "list.sort返回什么？",
+      "answer": "返回None并原地修改；sorted返回新列表。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Python 官方：Sorting Techniques",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "attribution": "2026-10-23实际核对，项目为原创教学练习"
+    },
+    {
+      "title": "CS50x：Lecture 3 — Sorting",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "attribution": "2026-10-23实际核对，项目为原创教学练习"
+    }
+  ]
+}
