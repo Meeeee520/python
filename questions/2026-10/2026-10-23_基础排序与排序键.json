@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-23",
+  "topic": "基础排序与排序键",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 30,
+  "notePath": "notes/2026-10/2026-10-23_基础排序与排序键.md",
+  "collectedAt": "2026-10-23",
+  "sources": [
+    {
+      "title": "Python 官方：Sorting Techniques",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "kind": "Python 官方教程"
+    },
+    {
+      "title": "CS50x：Lecture 3 — Sorting",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "kind": "Harvard 官方课程"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "sorted 与 list.sort",
+      "difficulty": "基础",
+      "prompt": "哪项描述正确？",
+      "answer": 1,
+      "explanation": "sorted 返回新列表并接受任意可迭代对象；list.sort 原地修改列表并返回 None。",
+      "hint": "关注返回值和原列表。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "两者都返回原列表",
+        "sorted 返回新列表，list.sort 原地修改",
+        "list.sort 可用于任何迭代对象",
+        "两者都会保持原顺序不变"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "key 的作用",
+      "difficulty": "基础",
+      "prompt": "sorted(records, key=lambda item: item[1], reverse=True) 中 key 做什么？",
+      "answer": 2,
+      "explanation": "key 为每条记录提取第2项作为排序依据；reverse=True 表示降序。",
+      "hint": "key 返回比较用的值。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "删除第2项",
+        "把记录转为字符串",
+        "提取第2项作为排序键",
+        "只保留成绩相同项"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "mcq",
+      "title": "稳定排序",
+      "difficulty": "基础",
+      "prompt": "记录按成绩降序排序，Amy 80 在 Cy 80 之前。稳定排序会怎样处理两条 80 分记录？",
+      "answer": 0,
+      "explanation": "键相等时保持原相对顺序，这是稳定性的定义。",
+      "hint": "相等不代表任意交换。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "options": [
+        "Amy 仍在 Cy 前",
+        "Cy 必须在 Amy 前",
+        "删除其中一条",
+        "按姓名自动重排"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "short",
+      "title": "插入排序的一轮",
+      "difficulty": "基础",
+      "prompt": "写出输出。",
+      "answer": "[3, 4, 5]",
+      "explanation": "current=3，5右移到下标2，4右移到下标1，3放到下标0。",
+      "hint": "从已排序前缀右向左比较。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "code": "a=[4,5,3]\ncurrent=a[2]\nj=1\nwhile j>=0 and a[j]>current:\n    a[j+1]=a[j]\n    j-=1\na[j+1]=current\nprint(a)"
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "稳定的成绩降序插入排序",
+      "difficulty": "基础",
+      "prompt": "实现 insertion_sort_by_score(records)，records 是 (name,score) 元组列表。返回新列表，按成绩降序；相同成绩保持原顺序，不修改输入。网站不执行，请本地测试。",
+      "answer": "def insertion_sort_by_score(records):\n    result = records.copy()\n    for i in range(1, len(result)):\n        current = result[i]\n        j = i - 1\n        while j >= 0 and result[j][1] < current[1]:\n            result[j + 1] = result[j]\n            j -= 1\n        result[j + 1] = current\n    return result\n\n",
+      "explanation": "只在前项成绩严格小于 current 时右移；相等时停止，因而保持稳定。复制输入后最坏 O(n²)，额外 O(n) 用于返回新列表。",
+      "hint": "稳定性的关键是严格小于，而不是小于等于。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-23 实际阅读的官方/课程资料原创，非官方原题",
+      "language": "python",
+      "starter": "def insertion_sort_by_score(records):\n    pass\n",
+      "tests": [
+        {
+          "input": "print(insertion_sort_by_score([(\"Amy\",80),(\"Bo\",95),(\"Cy\",80),(\"Di\",70)]))",
+          "output": "[('Bo', 95), ('Amy', 80), ('Cy', 80), ('Di', 70)]"
+        },
+        {
+          "input": "print(insertion_sort_by_score([]))",
+          "output": "[]"
+        },
+        {
+          "input": "x=[(\"A\",0)]; print(insertion_sort_by_score(x)); print(x)",
+          "output": "[('A', 0)]\n[('A', 0)]"
+        },
+        {
+          "input": "print(insertion_sort_by_score([(\"A\",90),(\"B\",90),(\"C\",90)]))",
+          "output": "[('A', 90), ('B', 90), ('C', 90)]"
+        }
+      ]
+    }
+  ]
+}
