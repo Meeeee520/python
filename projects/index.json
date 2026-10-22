@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-21",
+  "updatedAt": "2026-10-23",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -270,16 +270,17 @@
         "有序前提"
       ],
       "javaConcepts": [
-        "栈与队列",
-        "操作顺序"
+        "String.length()",
+        "charAt",
+        "ASCII分类统计"
       ],
       "minutes": 60,
-      "javaMinutes": 20,
+      "javaMinutes": 15,
       "pythonPath": "projects/2026-10/daily-2026-10-22.json",
       "javaPath": "projects/2026-10/daily-2026-10-22.json",
       "guidePath": "projects/2026-10/daily-2026-10-22.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-22.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-23",
@@ -295,17 +296,17 @@
         "稳定性"
       ],
       "javaConcepts": [
-        "节点",
-        "value/next",
-        "构造方法"
+        "数组有效区间",
+        "相邻相等计数",
+        "字符串遍历验收"
       ],
       "minutes": 60,
-      "javaMinutes": 20,
+      "javaMinutes": 15,
       "pythonPath": "projects/2026-10/daily-2026-10-23.json",
       "javaPath": "projects/2026-10/daily-2026-10-23.json",
       "guidePath": "projects/2026-10/daily-2026-10-23.md",
       "javaGuidePath": "projects/2026-10/daily-2026-10-23.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "weekend-2026-10-24",
