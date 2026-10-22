@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "projectId": "daily-2026-10-22",
+  "track": "python",
+  "title": "选课名单查找器",
+  "goal": "实现并比较线性查找与闭区间二分查找，验证有序前提和边界。",
+  "prerequisites": [
+    "时间复杂度与循环",
+    "列表和函数"
+  ],
+  "filename": "search_demo.py",
+  "runCommand": "python3 search_demo.py",
+  "starter": "def linear_search(values, target):\n    pass\n\n\ndef binary_search(values, target):\n    pass\n\n\ndef main():\n    values = [int(x) for x in input().split()]\n    target = int(input())\n    linear = linear_search(values, target)\n    binary = binary_search(values, target)\n    print(\"Linear:\", *linear)\n    print(\"Binary:\", *binary)\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solution": "def linear_search(values, target):\n    checks = 0\n    for i, value in enumerate(values):\n        checks += 1\n        if value == target:\n            return i, checks\n    return -1, checks\n\n\ndef binary_search(values, target):\n    low, high = 0, len(values) - 1\n    checks = 0\n    while low <= high:\n        mid = (low + high) // 2\n        checks += 1\n        if values[mid] == target:\n            return mid, checks\n        if values[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1, checks\n\n\ndef main():\n    values = [int(x) for x in input().split()]\n    target = int(input())\n    linear = linear_search(values, target)\n    binary = binary_search(values, target)\n    print(\"Linear:\", *linear)\n    print(\"Binary:\", *binary)\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "solutionExplanation": [
+    "线性查找最坏O(n)，二分查找最坏O(log n)。",
+    "两者均返回实际比较次数，空列表比较0次。"
+  ],
+  "steps": [
+    {
+      "id": "write-contract",
+      "day": "2026-10-22",
+      "title": "写返回契约",
+      "instruction": "两种查找都返回下标与实际比较次数，未命中返回-1。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "查找",
+        "复杂度"
+      ]
+    },
+    {
+      "id": "linear",
+      "day": "2026-10-22",
+      "title": "实现线性查找",
+      "instruction": "逐项比较，首个命中立即返回。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "查找",
+        "复杂度"
+      ]
+    },
+    {
+      "id": "binary",
+      "day": "2026-10-22",
+      "title": "实现二分查找",
+      "instruction": "仅对升序互异列表维护闭区间low/high。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "查找",
+        "复杂度"
+      ]
+    },
+    {
+      "id": "boundary",
+      "day": "2026-10-22",
+      "title": "运行边界",
+      "instruction": "检查空、单元素、首尾和未命中。",
+      "hint": "先预测边界输出再运行。",
+      "knowledge": [
+        "查找",
+        "复杂度"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-1",
+      "label": "正常样例",
+      "input": "10 20 30 40 50\n40\n",
+      "output": "Linear: 3 4\nBinary: 3 2",
+      "purpose": "验证核心路径"
+    },
+    {
+      "id": "test-2",
+      "label": "空数据",
+      "input": "\n7\n",
+      "output": "Linear: -1 0\nBinary: -1 0",
+      "purpose": "验证空数据"
+    },
+    {
+      "id": "test-3",
+      "label": "单元素或边界",
+      "input": "7\n7\n",
+      "output": "Linear: 0 1\nBinary: 0 1",
+      "purpose": "验证最小规模与状态保护"
+    },
+    {
+      "id": "test-4",
+      "label": "未命中或非法",
+      "input": "1 3 5 7\n2\n",
+      "output": "Linear: -1 4\nBinary: -1 2",
+      "purpose": "验证未命中或非法输入"
+    }
+  ],
+  "recall": [
+    {
+      "id": "sorted-precondition",
+      "question": "为什么二分查找必须有序？",
+      "answer": "因为依据中间值决定排除哪一半，无序时方向不成立。"
+    },
+    {
+      "id": "insertion-point",
+      "question": "bisect_left直接表示命中吗？",
+      "answer": "不，它返回左侧插入点，还需检查范围和等值。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Python 官方：bisect — Array bisection algorithm",
+      "url": "https://docs.python.org/3/library/bisect.html",
+      "attribution": "2026-10-23实际核对，项目为原创教学练习"
+    },
+    {
+      "title": "CS50x：Lecture 3 — Search and Running Time",
+      "url": "https://cs50.harvard.edu/x/notes/3/",
+      "attribution": "2026-10-23实际核对，项目为原创教学练习"
+    }
+  ]
+}
