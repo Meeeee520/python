@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-24",
+  "topic": "算法边界与测试",
+  "stage": "Git与基础算法",
+  "estimatedMinutes": 30,
+  "notePath": "notes/2026-10/2026-10-24_算法边界与测试.md",
+  "collectedAt": "2026-10-24",
+  "sources": [
+    {
+      "title": "Python 官方：Sorting Techniques",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "kind": "Python 官方教程"
+    },
+    {
+      "title": "Python 官方：Data Structures",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html",
+      "kind": "Python 官方教程"
+    },
+    {
+      "title": "Python 官方：unittest",
+      "url": "https://docs.python.org/3/library/unittest.html",
+      "kind": "Python 官方标准库"
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "title": "先确定契约",
+      "difficulty": "基础",
+      "prompt": "linear_search 约定未命中返回 -1。哪组最直接验证未命中边界？",
+      "answer": 2,
+      "explanation": "空列表和不存在姓名都应得到 -1；它们分别覆盖最小规模与非空未命中。",
+      "hint": "边界不只一种。",
+      "sourceIndex": 2,
+      "attribution": "依据 2026-10-24 实际阅读的官方资料原创，非官方原题",
+      "options": [
+        "只测试目标在首位",
+        "只测试目标在末位",
+        "测试空列表，以及非空列表中不存在的姓名",
+        "随机运行十次但不写期望值"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "mcq",
+      "title": "稳定排序测试",
+      "difficulty": "基础",
+      "prompt": "记录 [(\"甲\",95),(\"乙\",80),(\"丙\",95)] 按成绩降序稳定排序，正确结果是什么？",
+      "answer": 1,
+      "explanation": "两个95分键相等，稳定排序保持甲在丙之前。",
+      "hint": "相同键保留输入顺序。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-24 实际阅读的官方资料原创，非官方原题",
+      "options": [
+        "[(\"丙\",95),(\"甲\",95),(\"乙\",80)]",
+        "[(\"甲\",95),(\"丙\",95),(\"乙\",80)]",
+        "[(\"乙\",80),(\"甲\",95),(\"丙\",95)]",
+        "顺序不确定"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "short",
+      "title": "断言输出",
+      "difficulty": "基础",
+      "prompt": "写出输出；若断言失败则写 AssertionError。",
+      "answer": "OK",
+      "explanation": "sorted 返回新列表，原列表 values 保持 [2,1]，因此断言通过。",
+      "hint": "区分 sorted 与 list.sort。",
+      "sourceIndex": 1,
+      "attribution": "依据 2026-10-24 实际阅读的官方资料原创，非官方原题",
+      "code": "values=[2,1]\nresult=sorted(values)\nassert result==[1,2]\nassert values==[2,1]\nprint(\"OK\")"
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "title": "有区分度的测试",
+      "difficulty": "基础",
+      "prompt": "要发现“查找重复姓名时错误地返回最后一次命中”，哪项输入最有效？",
+      "answer": 3,
+      "explanation": "同一姓名出现两次且位置不同，才能区分返回第一处与最后一处。",
+      "hint": "让两种实现产生不同输出。",
+      "sourceIndex": 2,
+      "attribution": "依据 2026-10-24 实际阅读的官方资料原创，非官方原题",
+      "options": [
+        "空列表",
+        "单条且命中",
+        "多条但姓名都不同",
+        "[(\"阿青\",88),(\"小林\",95),(\"阿青\",91)] 查询阿青"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "code",
+      "title": "为查找与排名补齐边界测试",
+      "difficulty": "基础",
+      "prompt": "实现 linear_search 和 rank_records，并写 run_checks 覆盖空、单元素、重复姓名、未命中、同分稳定性与输入不变。网站不执行，请本地测试。",
+      "answer": "def linear_search(records, name):\n    for index, (student, _score) in enumerate(records):\n        if student == name:\n            return index\n    return -1\n\n\ndef rank_records(records):\n    return sorted(records, key=lambda item: item[1], reverse=True)\n\n\ndef run_checks():\n    assert linear_search([], \"阿青\") == -1\n    assert rank_records([]) == []\n\n    one = [(\"阿青\", 88)]\n    assert linear_search(one, \"阿青\") == 0\n    assert rank_records(one) == one\n\n    records = [(\"阿青\", 88), (\"小林\", 95), (\"阿青\", 91), (\"小周\", 95)]\n    assert linear_search(records, \"阿青\") == 0\n    assert linear_search(records, \"不存在\") == -1\n    assert rank_records(records) == [\n        (\"小林\", 95), (\"小周\", 95), (\"阿青\", 91), (\"阿青\", 88)\n    ]\n    assert records[0] == (\"阿青\", 88)\n\n\nif __name__ == \"__main__\":\n    run_checks()\n    print(\"python checks: OK\")\n",
+      "explanation": "查找在首次命中立即返回；sorted 返回新列表且排序稳定。断言同时检查值、顺序与输入状态。",
+      "hint": "不要只比较成绩集合；同分记录的姓名顺序也要检查。",
+      "sourceIndex": 0,
+      "attribution": "依据 2026-10-24 实际阅读的官方资料原创，非官方原题",
+      "language": "python",
+      "starter": "def linear_search(records, name):\n    pass\n\n\ndef rank_records(records):\n    pass\n\n\ndef run_checks():\n    pass\n",
+      "tests": [
+        {
+          "input": "print(linear_search([], \"阿青\")); print(rank_records([]))",
+          "output": "-1\n[]"
+        },
+        {
+          "input": "print(linear_search([(\"阿青\",88)], \"阿青\"))",
+          "output": "0"
+        },
+        {
+          "input": "r=[(\"阿青\",88),(\"小林\",95),(\"阿青\",91),(\"小周\",95)]; print(linear_search(r,\"阿青\")); print(rank_records(r)); print(r)",
+          "output": "0\n[('小林', 95), ('小周', 95), ('阿青', 91), ('阿青', 88)]\n[('阿青', 88), ('小林', 95), ('阿青', 91), ('小周', 95)]"
+        },
+        {
+          "input": "print(linear_search([(\"阿青\",88)], \"不存在\"))",
+          "output": "-1"
+        }
+      ]
+    }
+  ]
+}
