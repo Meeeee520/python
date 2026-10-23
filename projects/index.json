@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-23",
+  "updatedAt": "2026-10-24",
   "projects": [
     {
       "id": "weekend-2026-10-10",
@@ -314,26 +314,25 @@
       "endDate": "2026-10-25",
       "kind": "weekend",
       "title": "可查可排的成绩档案",
-      "description": "给成绩账本加入查找和排名，用 Git 记录开发，解释复杂度并验证边界。",
+      "description": "周六完成姓名查找、稳定排名与边界断言；周日继续组合流程和独立验收。",
       "concepts": [
-        "Git",
-        "查找",
-        "排序",
-        "复杂度",
+        "线性查找",
+        "sorted 与 key",
+        "稳定排序",
         "边界测试"
       ],
       "javaConcepts": [
-        "队列",
-        "链表遍历",
-        "可选：头插与尾插"
+        "数组有效区间",
+        "字符串分类统计",
+        "边界测试"
       ],
       "minutes": 180,
-      "javaMinutes": 40,
+      "javaMinutes": 90,
       "pythonPath": "projects/2026-10/weekend-2026-10-24.json",
       "javaPath": "projects/2026-10/weekend-2026-10-24.json",
       "guidePath": "projects/2026-10/weekend-2026-10-24.md",
       "javaGuidePath": "projects/2026-10/weekend-2026-10-24.md",
-      "ready": false
+      "ready": true
     },
     {
       "id": "daily-2026-10-26",
