@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "projectId": "weekend-2026-10-24",
+  "track": "python",
+  "title": "可查可排的成绩档案",
+  "goal": "在现有成绩记录上加入按姓名查找和稳定排名，并用边界断言保护契约。",
+  "prerequisites": [
+    "函数与列表",
+    "线性查找",
+    "sorted、key 与稳定性"
+  ],
+  "filename": "score_archive.py",
+  "runCommand": "python3 score_archive.py",
+  "starter": "def linear_search(records, name):\n    pass\n\n\ndef rank_records(records):\n    pass\n\n\ndef run_checks():\n    pass\n\n\nif __name__ == \"__main__\":\n    run_checks()\n",
+  "solution": "def linear_search(records, name):\n    for index, (student, _score) in enumerate(records):\n        if student == name:\n            return index\n    return -1\n\n\ndef rank_records(records):\n    return sorted(records, key=lambda item: item[1], reverse=True)\n\n\ndef run_checks():\n    assert linear_search([], \"阿青\") == -1\n    assert rank_records([]) == []\n\n    one = [(\"阿青\", 88)]\n    assert linear_search(one, \"阿青\") == 0\n    assert rank_records(one) == one\n\n    records = [(\"阿青\", 88), (\"小林\", 95), (\"阿青\", 91), (\"小周\", 95)]\n    assert linear_search(records, \"阿青\") == 0\n    assert linear_search(records, \"不存在\") == -1\n    assert rank_records(records) == [\n        (\"小林\", 95), (\"小周\", 95), (\"阿青\", 91), (\"阿青\", 88)\n    ]\n    assert records[0] == (\"阿青\", 88)\n\n\nif __name__ == \"__main__\":\n    run_checks()\n    print(\"python checks: OK\")\n",
+  "solutionExplanation": [
+    "姓名查找首次命中立即返回，最坏 O(n)。",
+    "排名用 sorted 返回新列表，key 只提取成绩并保持同分稳定。",
+    "断言覆盖空、单元素、重复、未命中、同分和输入不变。"
+  ],
+  "steps": [
+    {
+      "id": "contract",
+      "day": "2026-10-24",
+      "title": "写清契约",
+      "instruction": "确定查找首次命中与未命中返回值，以及排名不修改输入。",
+      "hint": "先写期望输出。",
+      "knowledge": [
+        "函数契约",
+        "边界测试"
+      ]
+    },
+    {
+      "id": "search",
+      "day": "2026-10-24",
+      "title": "完成姓名查找",
+      "instruction": "单次遍历并在首次命中返回下标。",
+      "hint": "循环结束后再返回 -1。",
+      "knowledge": [
+        "线性查找",
+        "O(n)"
+      ]
+    },
+    {
+      "id": "rank",
+      "day": "2026-10-24",
+      "title": "完成稳定排名",
+      "instruction": "用 sorted、key 和 reverse 返回新列表。",
+      "hint": "同分记录保持输入顺序。",
+      "knowledge": [
+        "排序键",
+        "稳定性"
+      ]
+    },
+    {
+      "id": "core-tests",
+      "day": "2026-10-24",
+      "title": "运行核心边界测试",
+      "instruction": "覆盖空、单元素、重复、未命中、同分与输入不变。",
+      "hint": "检查顺序而非集合。",
+      "knowledge": [
+        "assert",
+        "边界测试"
+      ]
+    },
+    {
+      "id": "combine",
+      "day": "2026-10-25",
+      "title": "组合查询与排名流程",
+      "instruction": "让一份记录既能查询又能展示排名，不改变两个函数契约。",
+      "hint": "保持计算与展示分离。",
+      "knowledge": [
+        "函数组合",
+        "职责"
+      ]
+    },
+    {
+      "id": "acceptance",
+      "day": "2026-10-25",
+      "title": "独立验收与复盘",
+      "instruction": "不看参考实现重写核心函数，运行测试并解释复杂度。",
+      "hint": "先预测，再运行。",
+      "knowledge": [
+        "独立实现",
+        "复杂度"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-1",
+      "label": "正常与重复",
+      "input": "r=[(\"阿青\",88),(\"小林\",95),(\"阿青\",91),(\"小周\",95)]; print(linear_search(r,\"阿青\")); print(rank_records(r))",
+      "output": "0\n[('小林', 95), ('小周', 95), ('阿青', 91), ('阿青', 88)]",
+      "purpose": "验证首次命中和同分稳定性"
+    },
+    {
+      "id": "test-2",
+      "label": "空数据",
+      "input": "print(linear_search([],\"A\")); print(rank_records([]))",
+      "output": "-1\n[]",
+      "purpose": "验证空数据"
+    },
+    {
+      "id": "test-3",
+      "label": "单元素",
+      "input": "print(linear_search([(\"A\",0)],\"A\")); print(rank_records([(\"A\",0)]))",
+      "output": "0\n[('A', 0)]",
+      "purpose": "验证最小非空规模"
+    },
+    {
+      "id": "test-4",
+      "label": "未命中与状态保护",
+      "input": "r=[(\"A\",2),(\"B\",1)]; print(linear_search(r,\"C\")); rank_records(r); print(r)",
+      "output": "-1\n[('A', 2), ('B', 1)]",
+      "purpose": "验证失败约定与输入不变"
+    }
+  ],
+  "recall": [
+    {
+      "id": "first-hit",
+      "question": "如何保证返回第一次命中？",
+      "answer": "在遍历中一旦相等立即返回下标。"
+    },
+    {
+      "id": "stable",
+      "question": "如何验证稳定性？",
+      "answer": "准备相同排序键但身份不同的记录，并检查其相对顺序。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Python 官方：Sorting Techniques",
+      "url": "https://docs.python.org/3/howto/sorting.html",
+      "attribution": "2026-10-24 实际核对，项目为原创教学练习"
+    },
+    {
+      "title": "Python 官方：Data Structures",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html",
+      "attribution": "2026-10-24 实际核对，项目为原创教学练习"
+    },
+    {
+      "title": "Python 官方：unittest",
+      "url": "https://docs.python.org/3/library/unittest.html",
+      "attribution": "2026-10-24 实际核对，项目为原创教学练习"
+    }
+  ]
+}
